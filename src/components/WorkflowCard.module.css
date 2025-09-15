@@ -1,0 +1,138 @@
+/* Styles based on OverviewPage.png design template */
+.card {
+  display: flex;
+  align-items: flex-start;
+  padding: 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+.avatar {
+  width: 72px;
+  height: 72px;
+  margin-right: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1976d2;
+  cursor: pointer;
+}
+.due {
+  font-size: 0.95rem;
+  color: #888;
+  margin-left: 16px;
+}
+.subflows {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+.subflow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+.subflow-label {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 4px;
+}
+.status {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* WorkflowCard table layout for overview page */
+.tableRow {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+  padding: 16px 0;
+  min-width: 100%;
+}
+.employee {
+  display: flex;
+  align-items: center;
+  min-width: 220px;
+  gap: 16px;
+  padding-left: 0;
+}
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+.nameEmail {
+  display: flex;
+  flex-direction: column;
+}
+.name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1976d2;
+}
+.email {
+  font-size: 0.95rem;
+  color: #555;
+}
+.department, .location, .exitDate {
+  min-width: 120px;
+  padding-left: 0;
+  font-size: 1rem;
+  color: #444;
+  text-align: left;
+}
+.statuses {
+  display: flex;
+  gap: 24px;
+  min-width: 320px;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+.statusLabel {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 2px;
+}
+.trafficlight {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-bottom: 2px;
+  border: 2px solid #eee;
+}
+.trafficlight.red {
+  background: #e53935;
+}
+.trafficlight.yellow {
+  background: #fbc02d;
+}
+.trafficlight.green {
+  background: #43a047;
+}
+.completion {
+  font-size: 0.95rem;
+  color: #333;
+}

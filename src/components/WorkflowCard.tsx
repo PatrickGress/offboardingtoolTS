@@ -1,56 +1,54 @@
-import { Card, CardContent, Avatar, Typography, Box, Grid, Chip } from '@mui/material';
+import styles from './WorkflowCard.module.css';
+import { Card } from '@mui/material';
 
-export type SubflowStatus =
-  | { type: 'not started' }
-  | { type: 'ongoing'; step: number; total: number }
-  | { type: 'done' };
-
-export type Subflow = {
-  name: string;
-  status: SubflowStatus;
+export type StatusColor = 'red' | 'yellow' | 'green';
+export type SubflowStatus = {
+  label: string;
+  color: StatusColor;
+  completion: string;
 };
 
 export type WorkflowData = {
   id: string;
   name: string;
+  email: string;
+  department: string;
+  location: string;
+  exitDate: string;
   dueDate: string;
   picture: string;
-  subflows: Subflow[];
+  statuses: SubflowStatus[];
+  subflows: any;
 };
 
 export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onNameClick: () => void }) {
+  const subflowLabels = ['HR', 'IT', 'Finance', 'Team'];
   return (
-    <Card sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-      <Avatar src={data.picture} sx={{ width: 56, height: 56, mr: 2 }} />
-      <CardContent sx={{ flex: 1 }}>
-        <Typography variant="h6" color="primary" sx={{ cursor: 'pointer' }} onClick={onNameClick}>
-          {data.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">Due: {data.dueDate}</Typography>
-        <Box sx={{ mt: 1 }}>
-          <Grid container spacing={1}>
-            {data.subflows.map((sf, idx) => (
-              <Box key={idx} component="span" sx={{ mr: 1 }}>
-                <Chip
-                  label={
-                    sf.status.type === 'ongoing'
-                      ? `${sf.name}: ${sf.status.step}/${sf.status.total}`
-                      : `${sf.name}: ${sf.status.type === 'done' ? '✔️' : '⏳'}`
-                  }
-                  color={
-                    sf.status.type === 'done'
-                      ? 'success'
-                      : sf.status.type === 'ongoing'
-                      ? 'info'
-                      : 'default'
-                  }
-                  variant={sf.status.type === 'not started' ? 'outlined' : 'filled'}
-                />
-              </Box>
-            ))}
-          </Grid>
-        </Box>
-      </CardContent>
+    <Card className={styles.tableRow}>
+      <div className={styles.employee}>
+        <img src={data.picture} alt={data.name} className={styles.avatar} />
+        <div className={styles.nameEmail}>
+          <span className={styles.name} onClick={onNameClick}>
+            {data.name}
+          </span>
+          <span className={styles.email}>{data.email}</span>
+        </div>
+      </div>
+      <span className={styles.department}>{data.department}</span>
+      <span className={styles.location}>{data.location}</span>
+      <span className={styles.exitDate}>{data.exitDate}</span>
+      <div className={styles.statuses}>
+        {subflowLabels.map((label, idx) => {
+          const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
+          return (
+            <div key={label} className={styles.status}>
+              <span className={styles.statusLabel}>{label}</span>
+              <span className={`${styles.trafficlight} ${styles[sf.color]}`}></span>
+              <span className={styles.completion}>{sf.completion}</span>
+            </div>
+          );
+        })}
+      </div>
     </Card>
   );
 }
