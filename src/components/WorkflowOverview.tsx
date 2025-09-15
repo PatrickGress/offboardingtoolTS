@@ -232,7 +232,7 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', fontWeight: 600, fontSize: '1rem', mb: 2, pl: 0, pr: 2, gap: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', fontWeight: 600, fontSize: '1rem', mb: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', width: { xs: '1100px', lg: '1320px' }, paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
         <span style={{ minWidth: 56 }}></span>
         <span style={{ minWidth: 340, maxWidth: 420, textAlign: 'left' }}>Employee</span>
         <span style={{ minWidth: 120, textAlign: 'left' }}>Department</span>
