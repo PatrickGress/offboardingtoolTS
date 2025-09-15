@@ -232,16 +232,17 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 2, pl: 0, pr: 2, gap: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0' }}>
-        <span style={{ minWidth: 220, paddingLeft: 0 }}>Employee</span>
-        <span style={{ minWidth: 120, paddingLeft: 0 }}>Department</span>
-        <span style={{ minWidth: 120, paddingLeft: 0 }}>Location</span>
-        <span style={{ minWidth: 120, paddingLeft: 0 }}>Exit Date</span>
-        <span style={{ minWidth: 320, display: 'flex', gap: 24, paddingLeft: 0 }}>
-          <span style={{ minWidth: 60 }}>HR</span>
-          <span style={{ minWidth: 60 }}>IT</span>
-          <span style={{ minWidth: 60 }}>Finance</span>
-          <span style={{ minWidth: 60 }}>Team</span>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', fontWeight: 600, fontSize: '1rem', mb: 2, pl: 0, pr: 2, gap: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
+        <span style={{ minWidth: 56 }}></span>
+        <span style={{ minWidth: 340, maxWidth: 420, textAlign: 'left' }}>Employee</span>
+        <span style={{ minWidth: 120, textAlign: 'left' }}>Department</span>
+        <span style={{ minWidth: 120, textAlign: 'left' }}>Location</span>
+        <span style={{ minWidth: 120, textAlign: 'left' }}>Exit Date</span>
+        <span style={{ minWidth: 320, display: 'flex', gap: 18, justifyContent: 'flex-start' }}>
+          <span style={{ minWidth: 60, textAlign: 'left' }}>HR</span>
+          <span style={{ minWidth: 60, textAlign: 'left' }}>IT</span>
+          <span style={{ minWidth: 60, textAlign: 'left' }}>Finance</span>
+          <span style={{ minWidth: 60, textAlign: 'left' }}>Team</span>
         </span>
       </Box>
       <Grid container spacing={2}>

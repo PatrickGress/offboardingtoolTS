@@ -2,7 +2,7 @@ import { Box, List, ListItem, ListItemText, Divider, ListItemButton } from '@mui
 
 export function DebugNav({ pages }: { pages: { name: string; onClick: () => void }[] }) {
   return (
-    <Box sx={{ width: 250, bgcolor: 'background.paper', borderRight: 1, borderColor: 'divider', minHeight: '100vh' }}>
+    <Box sx={{ width: 140, bgcolor: 'background.paper', borderRight: 1, borderColor: 'divider', minHeight: '100vh', m: 0 }}>
       <List>
         {pages.map((page) => (
           <ListItem disablePadding key={page.name}>
