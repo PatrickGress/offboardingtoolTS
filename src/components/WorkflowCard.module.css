@@ -53,25 +53,32 @@
   font-weight: 500;
 }
 .trafficlight {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 22px;
+  border-radius: 12px / 50%;
   margin: 0 6px 0 0;
   vertical-align: middle;
   box-shadow: 0 0 4px rgba(0,0,0,0.10);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  border-width: 2px;
+  border-style: solid;
 }
 .red {
   background: #e53935;
-  border: 2px solid #b71c1c;
+  border-color: #b71c1c;
 }
 .yellow {
   background: #fbc02d;
-  border: 2px solid #f9a825;
+  border-color: #f9a825;
 }
 .green {
   background: #43a047;
-  border: 2px solid #1b5e20;
+  border-color: #1b5e20;
 }
 
 /* WorkflowCard table layout for overview page */
@@ -166,11 +173,7 @@
   text-align: left;
 }
 .statusLabel {
-  text-align: left;
-  font-size: 0.92rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: none;
 }
 .completion {
   text-align: left;

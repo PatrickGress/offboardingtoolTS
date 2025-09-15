@@ -42,9 +42,7 @@ export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onName
           const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
           return (
             <div key={label} className={styles.status}>
-              <span className={styles.statusLabel}>{label}</span>
-              <span className={`${styles.trafficlight} ${styles[sf.color]}`}></span>
-              <span className={styles.completion}>{sf.completion}</span>
+              <span className={`${styles.trafficlight} ${styles[sf.color]}`}>{sf.completion}</span>
             </div>
           );
         })}
