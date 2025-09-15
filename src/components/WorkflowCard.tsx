@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, Avatar, Typography, Box, Grid, Chip } from '@mui/material';
 
 export type SubflowStatus =
@@ -31,7 +30,7 @@ export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onName
         <Box sx={{ mt: 1 }}>
           <Grid container spacing={1}>
             {data.subflows.map((sf, idx) => (
-              <Grid item key={idx}>
+              <Box key={idx} component="span" sx={{ mr: 1 }}>
                 <Chip
                   label={
                     sf.status.type === 'ongoing'
@@ -47,7 +46,7 @@ export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onName
                   }
                   variant={sf.status.type === 'not started' ? 'outlined' : 'filled'}
                 />
-              </Grid>
+              </Box>
             ))}
           </Grid>
         </Box>

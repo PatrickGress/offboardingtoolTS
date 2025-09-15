@@ -1,6 +1,6 @@
-import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
-import { WorkflowCard, WorkflowData } from './WorkflowCard';
+import { WorkflowCard } from './WorkflowCard';
+import type { WorkflowData } from './WorkflowCard';
 
 const mockWorkflows: WorkflowData[] = [
   {
@@ -35,9 +35,9 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
       <Typography variant="h5" gutterBottom>Workflow Overview</Typography>
       <Grid container spacing={2}>
         {mockWorkflows.map((wf) => (
-          <Grid item xs={12} md={6} key={wf.id}>
+          <Box key={wf.id} sx={{ mb: 2 }}>
             <WorkflowCard data={wf} onNameClick={() => onWorkflowClick(wf.id)} />
-          </Grid>
+          </Box>
         ))}
       </Grid>
     </Box>
