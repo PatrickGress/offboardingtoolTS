@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Box } from '@mui/material';
+import { DebugNav } from './components/DebugNav';
+import { WorkflowOverview } from './components/WorkflowOverview';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [page, setPage] = useState<'overview' | 'placeholder1' | 'placeholder2' | 'placeholder3' | 'placeholder4' | 'placeholder5'>('overview');
+
+  const pages = [
+    { name: 'Overview', onClick: () => setPage('overview') },
+    { name: 'Placeholder 1', onClick: () => setPage('placeholder1') },
+    { name: 'Placeholder 2', onClick: () => setPage('placeholder2') },
+    { name: 'Placeholder 3', onClick: () => setPage('placeholder3') },
+    { name: 'Placeholder 4', onClick: () => setPage('placeholder4') },
+    { name: 'Placeholder 5', onClick: () => setPage('placeholder5') },
+  ];
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100' }}>
+      <DebugNav pages={pages} />
+      <Box sx={{ flex: 1, p: 3 }}>
+        {page === 'overview' && (
+          <WorkflowOverview onWorkflowClick={(id) => alert(`Go to workflow detail for ${id}`)} />
+        )}
+        {page !== 'overview' && (
+          <Box sx={{ p: 4 }}>
+            <h2>{pages.find(p => p.name.toLowerCase().includes(page))?.name}</h2>
+            <p>Placeholder page. Instructions will follow.</p>
+          </Box>
+        )}
+      </Box>
+    </Box>
+  );
 }
 
-export default App
+export default App;
