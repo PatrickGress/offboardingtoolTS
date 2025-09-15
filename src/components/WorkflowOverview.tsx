@@ -232,17 +232,16 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', fontWeight: 600, fontSize: '1rem', mb: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', width: { xs: '1100px', lg: '1320px' }, paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
-        <span style={{ minWidth: 56 }}></span>
-        <span style={{ minWidth: 340, maxWidth: 420, textAlign: 'left' }}>Employee</span>
-        <span style={{ minWidth: 120, textAlign: 'left' }}>Department</span>
-        <span style={{ minWidth: 120, textAlign: 'left' }}>Location</span>
-        <span style={{ minWidth: 120, textAlign: 'left' }}>Exit Date</span>
-        <span style={{ minWidth: 320, display: 'flex', gap: 18, justifyContent: 'flex-start' }}>
-          <span style={{ minWidth: 60, textAlign: 'left' }}>HR</span>
-          <span style={{ minWidth: 60, textAlign: 'left' }}>IT</span>
-          <span style={{ minWidth: 60, textAlign: 'left' }}>Finance</span>
-          <span style={{ minWidth: 60, textAlign: 'left' }}>Team</span>
+      <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', width: { xs: '1100px', lg: '1320px' }, paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
+        <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 56 }}></span>
+        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, maxWidth: 420, textAlign: 'center' }}>Department</span>
+        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, textAlign: 'center' }}>Location</span>
+        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, textAlign: 'center' }}>Exit Date</span>
+        <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', justifyContent: 'center', minWidth: 320 }}>
+          <span style={{ minWidth: 60, textAlign: 'center' }}>HR</span>
+          <span style={{ minWidth: 60, textAlign: 'center' }}>IT</span>
+          <span style={{ minWidth: 60, textAlign: 'center' }}>Finance</span>
+          <span style={{ minWidth: 60, textAlign: 'center' }}>Team</span>
         </span>
       </Box>
       <Grid container spacing={2}>
