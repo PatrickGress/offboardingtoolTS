@@ -98,6 +98,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 340px;
+  margin-right: 8px;
 }
 .department {
   min-width: 120px;
@@ -107,24 +108,25 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 8px;
 }
 .location {
   min-width: 120px;
-  padding-left: 0;
   text-align: left;
   font-size: 0.92rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 8px;
 }
 .exitDate {
   min-width: 120px;
-  padding-left: 0;
   text-align: left;
   font-size: 0.92rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: 8px;
 }
 .statuses {
   display: flex;
