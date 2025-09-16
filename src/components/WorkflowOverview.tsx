@@ -48,7 +48,7 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, maxWidth: 420, textAlign: 'left' }}>Department</span>
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Location</span>
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Exit Date</span>
-        <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', justifyContent: 'center', minWidth: 320 }}>
+        <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', minWidth: 320 }}>
           <span style={{ minWidth: 60, textAlign: 'center' }}>HR</span>
           <span style={{ minWidth: 60, textAlign: 'center' }}>IT</span>
           <span style={{ minWidth: 60, textAlign: 'center' }}>Finance</span>
