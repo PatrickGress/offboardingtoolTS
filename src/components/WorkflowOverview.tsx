@@ -44,7 +44,7 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
         </FormControl>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', width: { xs: '1100px', lg: '1320px' }, paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
-        <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 56 }}></span>
+        <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 56 }}>Employee</span>
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, maxWidth: 420, textAlign: 'center' }}>Department</span>
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, textAlign: 'center' }}>Location</span>
         <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 120, textAlign: 'center' }}>Exit Date</span>
@@ -55,9 +55,9 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           <span style={{ minWidth: 60, textAlign: 'center' }}>Team</span>
         </span>
       </Box>
-      <Grid container spacing={2}>
+      <Grid container spacing={0.5}>
         {sortedWorkflows.map((wf) => (
-          <Box key={wf.id} sx={{ mb: 2 }}>
+          <Box key={wf.id} sx={{ mb: 0.5 }}>
             <WorkflowCard data={wf} onNameClick={() => onWorkflowClick(wf.id)} />
           </Box>
         ))}
