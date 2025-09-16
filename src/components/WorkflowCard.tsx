@@ -24,7 +24,7 @@ export type WorkflowData = {
 export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onNameClick: () => void }) {
   const subflowLabels = ['HR', 'IT', 'Finance', 'Team'];
   return (
-    <Card className={styles.tableRow}>
+    <Card className={styles.tableRow} sx={{ m: 0, p: 0, boxShadow: 'none', borderRadius: 0, bgcolor: '#fff' }}>
       <div className={styles.employee}>
         <img src={data.picture} alt={data.name} className={styles.avatar} />
         <div className={styles.nameEmail}>

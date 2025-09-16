@@ -26,7 +26,7 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
   const [sortBy, setSortBy] = useState('exitDate');
   const sortedWorkflows = sortWorkflows(mockWorkflows, sortBy);
   return (
-    <Paper elevation={3} sx={{ p: 3, borderRadius: 3, border: '1px solid #e0e0e0', bgcolor: '#fafafa' }}>
+    <Paper elevation={0} sx={{ p: 0, borderRadius: 0, border: 'none', bgcolor: '#fafafa' }}>
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -72,9 +72,9 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           </span>
         </Box>
       </Box>
-      <Grid container spacing={0.5}>
-        {sortedWorkflows.map((wf) => (
-          <Box key={wf.id} sx={{ mb: 0.5 }}>
+      <Grid container spacing={0} sx={{ borderRadius: 0, boxShadow: 'none', bgcolor: '#fafafa', m: 0, p: 0 }}>
+        {sortedWorkflows.map((wf, idx) => (
+          <Box key={wf.id} sx={{ m: 0, p: 0, borderBottom: idx < sortedWorkflows.length - 1 ? '1px solid #e0e0e0' : 'none', borderRadius: 0, boxShadow: 'none', bgcolor: '#fafafa' }}>
             <WorkflowCard data={wf} onNameClick={() => onWorkflowClick(wf.id)} />
           </Box>
         ))}
