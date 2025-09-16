@@ -2,7 +2,7 @@ import { Box, Typography, Grid, Paper, FormControl, InputLabel, Select, MenuItem
 import { WorkflowCard } from './WorkflowCard';
 import type { WorkflowData } from './WorkflowCard';
 import { useState } from 'react';
-import { mockWorkflows } from '../mockWorkflows';
+import { mockWorkflows } from '../mockCards';
 
 const sortOptions = [
   { value: 'exitDate', label: 'Exit date' },
