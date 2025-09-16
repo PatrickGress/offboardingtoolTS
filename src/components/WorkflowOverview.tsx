@@ -27,36 +27,50 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
   const sortedWorkflows = sortWorkflows(mockWorkflows, sortBy);
   return (
     <Paper elevation={3} sx={{ p: 3, borderRadius: 3, border: '1px solid #e0e0e0', bgcolor: '#fafafa' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1 }}>
-          Ongoing Processes ({sortedWorkflows.length})
-        </Typography>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <InputLabel id="sort-by-label">Sort by</InputLabel>
-          <Select
-            labelId="sort-by-label"
-            value={sortBy}
-            label="Sort by"
-            onChange={e => setSortBy(e.target.value)}
-          >
-            {sortOptions.map(opt => (
-              <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-      <Box sx={{ width: '100%', height: '1px', bgcolor: '#e0e0e0', mb: 2 }} />
-      <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 2, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', minHeight: '64px', width: { xs: '1100px', lg: '1320px' }, paddingLeft: { xs: '32px', lg: '64px' }, paddingRight: { xs: '32px', lg: '64px' } }}>
-        <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 56 }}>Employee</span>
-        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, maxWidth: 420, textAlign: 'left' }}>Department</span>
-        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Location</span>
-        <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Exit Date</span>
-        <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', minWidth: 320 }}>
-          <span style={{ minWidth: 60, textAlign: 'center' }}>HR</span>
-          <span style={{ minWidth: 60, textAlign: 'center' }}>IT</span>
-          <span style={{ minWidth: 60, textAlign: 'center' }}>Finance</span>
-          <span style={{ minWidth: 60, textAlign: 'center' }}>Team</span>
-        </span>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        bgcolor: '#f5f5f5',
+        borderRadius: 2,
+        border: '1px solid #e0e0e0',
+        width: { xs: '1100px', lg: '1320px' },
+        minHeight: '64px',
+        paddingLeft: { xs: '32px', lg: '64px' },
+        paddingRight: { xs: '32px', lg: '64px' },
+        mb: 2
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1 }}>
+            Ongoing Processes ({sortedWorkflows.length})
+          </Typography>
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <InputLabel id="sort-by-label">Sort by</InputLabel>
+            <Select
+              labelId="sort-by-label"
+              value={sortBy}
+              label="Sort by"
+              onChange={e => setSortBy(e.target.value)}
+            >
+              {sortOptions.map(opt => (
+                <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ width: '100%', height: '1px', bgcolor: '#e0e0e0', mb: 2 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 0, bgcolor: 'inherit', borderRadius: 0, minHeight: '64px', width: '100%' }}>
+          <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 56 }}>Employee</span>
+          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, maxWidth: 420, textAlign: 'left' }}>Department</span>
+          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Location</span>
+          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Exit Date</span>
+          <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', minWidth: 320 }}>
+            <span style={{ minWidth: 60, textAlign: 'center' }}>HR</span>
+            <span style={{ minWidth: 60, textAlign: 'center' }}>IT</span>
+            <span style={{ minWidth: 60, textAlign: 'center' }}>Finance</span>
+            <span style={{ minWidth: 60, textAlign: 'center' }}>Team</span>
+          </span>
+        </Box>
       </Box>
       <Grid container spacing={0.5}>
         {sortedWorkflows.map((wf) => (
