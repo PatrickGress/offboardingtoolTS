@@ -36,7 +36,19 @@ export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onName
       </div>
       <span className={styles.department}>{data.department}</span>
       <span className={styles.location}>{data.location}</span>
-      <span className={styles.exitDate}>{data.exitDate}</span>
+      <span className={styles.exitDate}>
+        {(() => {
+          const today = new Date();
+          const exit = new Date(data.exitDate);
+          const diffDays = Math.ceil((exit.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+          let colorClass = styles.green;
+          if (diffDays <= 14) colorClass = styles.red;
+          else if (diffDays <= 30) colorClass = styles.yellow;
+          return (
+            <span className={`${styles.trafficlightDate} ${colorClass}`}>{data.exitDate}</span>
+          );
+        })()}
+      </span>
       <div className={styles.statuses}>
         {subflowLabels.map((label, idx) => {
           const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
