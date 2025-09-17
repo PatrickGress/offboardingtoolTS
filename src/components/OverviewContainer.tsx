@@ -84,6 +84,21 @@ export function OverviewContainer() {
     return true;
   });
 
+  // Search result lists for name/email/id and teamlead
+  const nameResults = useMemo(() => {
+    if (debouncedSearch.length < 3) return [];
+    const searchLower = debouncedSearch.toLowerCase();
+    return mockWorkflows
+      .filter(wf => wf.name.toLowerCase().includes(searchLower))
+      .map(wf => wf.name);
+  }, [debouncedSearch, mockWorkflows]);
+
+  const teamleadResults = useMemo(() => {
+    if (debouncedTeamleadSearch.length < 3) return [];
+    const searchLower = debouncedTeamleadSearch.toLowerCase();
+    return teamleads.filter(tl => tl.toLowerCase().includes(searchLower));
+  }, [debouncedTeamleadSearch, teamleads]);
+
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f0f2f5', minHeight: '100vh', p: 0 }}>
       {/* Headline row */}
@@ -103,15 +118,24 @@ export function OverviewContainer() {
         </Box>
       </Box>
       {/* Filter/Search box */}
-      <Paper elevation={3} sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2, mb: 3, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e0e0e0' }}>
-        <TextField
-          label="Search by name, email, or ID"
-          variant="outlined"
-          size="small"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          sx={{ minWidth: 220 }}
-        />
+      <Paper elevation={3} sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2, mb: 3, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e0e0e0', position: 'relative' }}>
+        <Box sx={{ position: 'relative', minWidth: 220 }}>
+          <TextField
+            label="Search by name, email, or ID"
+            variant="outlined"
+            size="small"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            sx={{ minWidth: 220 }}
+          />
+          {nameResults.length > 0 && (
+            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
+              {nameResults.map((n, i) => (
+                <MenuItem key={n + i}>{n}</MenuItem>
+              ))}
+            </Box>
+          )}
+        </Box>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Department</InputLabel>
           <Select value={department} label="Department" onChange={e => setDepartment(e.target.value)}>
@@ -121,7 +145,7 @@ export function OverviewContainer() {
             ))}
           </Select>
         </FormControl>
-        <FormControl size="small" sx={{ minWidth: 220 }}>
+        <Box sx={{ position: 'relative', minWidth: 220 }}>
           <TextField
             label="Search Teamlead"
             variant="outlined"
@@ -130,7 +154,14 @@ export function OverviewContainer() {
             onChange={e => setTeamleadSearch(e.target.value)}
             sx={{ minWidth: 220 }}
           />
-        </FormControl>
+          {teamleadResults.length > 0 && (
+            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
+              {teamleadResults.map((tl, i) => (
+                <MenuItem key={tl + i}>{tl}</MenuItem>
+              ))}
+            </Box>
+          )}
+        </Box>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Location</InputLabel>
           <Select value={location} label="Location" onChange={e => setLocation(e.target.value)}>
