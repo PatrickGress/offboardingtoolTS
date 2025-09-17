@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { mockWorkflows } from '../mockCards';
 
 const sortOptions = [
-  { value: 'exitDate', label: 'Exit date' },
+  { value: 'exitDate', label: 'Exit Date (soonest)' },
+  { value: 'exitDateLatest', label: 'Exit Date (latest)' },
   { value: 'nameAZ', label: 'Name A-Z' },
   { value: 'nameZA', label: 'Name Z-A' },
 ];
@@ -16,6 +17,8 @@ function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
       return [...workflows].sort((a, b) => a.name.localeCompare(b.name));
     case 'nameZA':
       return [...workflows].sort((a, b) => b.name.localeCompare(a.name));
+    case 'exitDateLatest':
+      return [...workflows].sort((a, b) => new Date(b.exitDate).getTime() - new Date(a.exitDate).getTime());
     case 'exitDate':
     default:
       return [...workflows].sort((a, b) => new Date(a.exitDate).getTime() - new Date(b.exitDate).getTime());
@@ -42,16 +45,18 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, pl: 4 }}>
             Ongoing Processes ({sortedWorkflows.length})
           </Typography>
-          <FormControl size="small" sx={{ minWidth: 180, pr: 4 }}>
+          <FormControl size="small" sx={{ minWidth: 220, pr: 4 }}>
             <InputLabel id="sort-by-label">Sort by</InputLabel>
             <Select
               labelId="sort-by-label"
               value={sortBy}
               label="Sort by"
               onChange={e => setSortBy(e.target.value)}
+              sx={{ width: 220, textAlign: 'left' }}
+              MenuProps={{ PaperProps: { sx: { minWidth: 220 } } }}
             >
               {sortOptions.map(opt => (
-                <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                <MenuItem key={opt.value} value={opt.value} sx={{ textAlign: 'left' }}>{opt.label}</MenuItem>
               ))}
             </Select>
           </FormControl>
