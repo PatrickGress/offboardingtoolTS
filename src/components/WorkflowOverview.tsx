@@ -1,8 +1,11 @@
-import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, IconButton, Popover } from '@mui/material';
 import { WorkflowCard } from './WorkflowCard';
 import type { WorkflowData } from './WorkflowCard';
 import { useState } from 'react';
 import { mockWorkflows } from '../mockCards';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CloseIcon from '@mui/icons-material/Close';
+import { FilterPanel } from './FilterPanel';
 
 const sortOptions = [
   { value: 'exitDate', label: 'Exit Date (soonest)' },
@@ -25,9 +28,20 @@ function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
   }
 }
 
-export function WorkflowOverview({ onWorkflowClick, workflows }: { onWorkflowClick: (id: string) => void; workflows?: WorkflowData[] }) {
+export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps }: any) {
   const [sortBy, setSortBy] = useState('exitDate');
   const sortedWorkflows = sortWorkflows(workflows ?? mockWorkflows, sortBy);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleFilterButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setFiltersOpen(!filtersOpen);
+  };
+  const handleClose = () => {
+    setFiltersOpen(false);
+    setAnchorEl(null);
+  };
+
   return (
     <Paper elevation={0} sx={{ p: 0, borderRadius: 2, border: '2px solid #e0e0e0', bgcolor: '#fafafa' }}>
       <Box sx={{
@@ -45,21 +59,36 @@ export function WorkflowOverview({ onWorkflowClick, workflows }: { onWorkflowCli
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, pl: 4 }}>
             Ongoing Processes ({sortedWorkflows.length})
           </Typography>
-          <FormControl size="small" sx={{ minWidth: 220, pr: 4 }}>
-            <InputLabel id="sort-by-label">Sort by</InputLabel>
-            <Select
-              labelId="sort-by-label"
-              value={sortBy}
-              label="Sort by"
-              onChange={e => setSortBy(e.target.value)}
-              sx={{ width: 220, textAlign: 'left' }}
-              MenuProps={{ PaperProps: { sx: { minWidth: 220 } } }}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1 }}>
+              {filtersOpen ? <CloseIcon /> : <FilterAltIcon />}
+            </IconButton>
+            <Popover
+              open={filtersOpen}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              PaperProps={{ sx: { mt: 1, borderRadius: 2, boxShadow: 4 } }}
             >
-              {sortOptions.map(opt => (
-                <MenuItem key={opt.value} value={opt.value} sx={{ textAlign: 'left' }}>{opt.label}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <FilterPanel {...filterPanelProps} />
+            </Popover>
+            <FormControl size="small" sx={{ minWidth: 220, pr: 4 }}>
+              <InputLabel id="sort-by-label">Sort by</InputLabel>
+              <Select
+                labelId="sort-by-label"
+                value={sortBy}
+                label="Sort by"
+                onChange={e => setSortBy(e.target.value)}
+                sx={{ width: 220, textAlign: 'left' }}
+                MenuProps={{ PaperProps: { sx: { minWidth: 220 } } }}
+              >
+                {sortOptions.map(opt => (
+                  <MenuItem key={opt.value} value={opt.value} sx={{ textAlign: 'left' }}>{opt.label}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
         <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fafafa' }}>
           <thead>
