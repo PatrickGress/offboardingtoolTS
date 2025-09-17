@@ -1,63 +1,64 @@
 import type { WorkflowData } from './components/WorkflowCard';
 
 export const mockWorkflows: WorkflowData[] = [
+  // All yellow
   {
     id: '1',
     name: 'Hans Herman',
     email: 'hans.herman@example.com',
     department: 'IT',
     location: 'Berlin',
-    teamlead: 'Lisa Schmidt', // employee name
-    criticality: 'yellow',
+    teamlead: 'Lisa Schmidt',
     exitDate: '2025-09-20',
     dueDate: '2025-09-20',
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
       { label: 'HR', color: 'yellow', completion: '1/3' },
-      { label: 'IT', color: 'red', completion: '0/2' },
-      { label: 'Finance', color: 'green', completion: '2/2' },
+      { label: 'IT', color: 'yellow', completion: '0/2' },
+      { label: 'Finance', color: 'yellow', completion: '2/2' },
       { label: 'Team', color: 'yellow', completion: '2/4' },
     ],
     subflows: [],
   },
+  // All red
   {
     id: '2',
     name: 'Lisa Schmidt',
     email: 'lisa.schmidt@example.com',
     department: 'HR',
     location: 'Munich',
-    teamlead: 'John Miller', // random name
-    criticality: 'red',
+    teamlead: 'John Miller',
     exitDate: '2025-09-25',
     dueDate: '2025-09-25',
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
       { label: 'HR', color: 'red', completion: '0/1' },
-      { label: 'IT', color: 'yellow', completion: '1/2' },
-      { label: 'Finance', color: 'green', completion: '1/1' },
-      { label: 'Team', color: 'green', completion: '1/1' },
+      { label: 'IT', color: 'red', completion: '1/2' },
+      { label: 'Finance', color: 'red', completion: '1/1' },
+      { label: 'Team', color: 'red', completion: '1/1' },
     ],
     subflows: [],
   },
+  // All red
   {
     id: '3',
     name: 'Markus Braun',
     email: 'markus.braun@example.com',
     department: 'Finance',
     location: 'Berlin',
-    teamlead: 'Emily Clark', // random name
-    criticality: 'green',
+    teamlead: 'Emily Clark',
     exitDate: '2025-10-01',
     dueDate: '2025-10-01',
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { label: 'HR', color: 'green', completion: '2/2' },
-      { label: 'IT', color: 'yellow', completion: '1/3' },
+      { label: 'HR', color: 'red', completion: '2/2' },
+      { label: 'IT', color: 'red', completion: '1/3' },
       { label: 'Finance', color: 'red', completion: '0/2' },
-      { label: 'Team', color: 'yellow', completion: '2/4' },
+      { label: 'Team', color: 'red', completion: '2/4' },
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '4',
     name: 'Julia Meier',
@@ -65,7 +66,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'IT',
     location: 'Hamburg',
     teamlead: 'Lisa Schmidt',
-    criticality: 'yellow',
     exitDate: '2025-10-05',
     dueDate: '2025-10-05',
     picture: 'https://mui.com/static/images/avatar/4.jpg',
@@ -77,6 +77,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '5',
     name: 'Peter Müller',
@@ -84,7 +85,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'HR',
     location: 'Berlin',
     teamlead: 'John Miller',
-    criticality: 'red',
     exitDate: '2025-10-10',
     dueDate: '2025-10-10',
     picture: 'https://mui.com/static/images/avatar/5.jpg',
@@ -96,6 +96,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '6',
     name: 'Anna Fischer',
@@ -103,7 +104,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'Finance',
     location: 'Munich',
     teamlead: 'Emily Clark',
-    criticality: 'green',
     exitDate: '2025-10-15',
     dueDate: '2025-10-15',
     picture: 'https://mui.com/static/images/avatar/6.jpg',
@@ -115,6 +115,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '7',
     name: 'Tom Becker',
@@ -122,7 +123,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'IT',
     location: 'Hamburg',
     teamlead: 'Lisa Schmidt',
-    criticality: 'yellow',
     exitDate: '2025-10-20',
     dueDate: '2025-10-20',
     picture: 'https://mui.com/static/images/avatar/7.jpg',
@@ -134,6 +134,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '8',
     name: 'Sophie Klein',
@@ -141,7 +142,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'Finance',
     location: 'Berlin',
     teamlead: 'John Miller',
-    criticality: 'green',
     exitDate: '2025-10-25',
     dueDate: '2025-10-25',
     picture: 'https://mui.com/static/images/avatar/8.jpg',
@@ -153,6 +153,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '9',
     name: 'Max Weber',
@@ -160,7 +161,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'HR',
     location: 'Munich',
     teamlead: 'Emily Clark',
-    criticality: 'red',
     exitDate: '2025-10-30',
     dueDate: '2025-10-30',
     picture: 'https://mui.com/static/images/avatar/9.jpg',
@@ -172,6 +172,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '10',
     name: 'Clara Wolf',
@@ -179,7 +180,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'IT',
     location: 'Berlin',
     teamlead: 'Lisa Schmidt',
-    criticality: 'yellow',
     exitDate: '2025-11-05',
     dueDate: '2025-11-05',
     picture: 'https://mui.com/static/images/avatar/10.jpg',
@@ -191,6 +191,7 @@ export const mockWorkflows: WorkflowData[] = [
     ],
     subflows: [],
   },
+  // Mixed
   {
     id: '11',
     name: 'Felix König',
@@ -198,7 +199,6 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'Finance',
     location: 'Hamburg',
     teamlead: 'John Miller',
-    criticality: 'green',
     exitDate: '2025-11-10',
     dueDate: '2025-11-10',
     picture: 'https://mui.com/static/images/avatar/11.jpg',

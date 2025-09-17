@@ -29,7 +29,11 @@ export function OverviewContainer() {
   // Memoized unique values for select fields
   const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
   const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
-  const criticality = useMemo(() => getUnique(mockWorkflows, 'criticality').map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) })), [mockWorkflows]);
+  // Criticality values: extract all unique status colors from all workflows
+  const criticality = useMemo(() => {
+    const allColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => s.color));
+    return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
+  }, [mockWorkflows]);
 
   // Teamlead search state
   const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
@@ -47,7 +51,8 @@ export function OverviewContainer() {
     if (teamleadLower && !wf.teamlead.toLowerCase().includes(teamleadLower)) return false;
     if (department && wf.department !== department) return false;
     if (location && wf.location !== location) return false;
-    if (crit && wf.criticality !== crit) return false;
+    // Criticality filter: show if ANY status color matches
+    if (crit && !wf.statuses.some(s => s.color === crit)) return false;
     return true;
   });
 

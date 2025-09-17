@@ -15,7 +15,6 @@ export type WorkflowData = {
   department: string;
   location: string;
   teamlead: string;
-  criticality: string;
   exitDate: string;
   dueDate: string;
   picture: string;
