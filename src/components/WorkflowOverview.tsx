@@ -25,18 +25,18 @@ function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
   }
 }
 
-export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: string) => void }) {
+export function WorkflowOverview({ onWorkflowClick, workflows }: { onWorkflowClick: (id: string) => void; workflows?: WorkflowData[] }) {
   const [sortBy, setSortBy] = useState('exitDate');
-  const sortedWorkflows = sortWorkflows(mockWorkflows, sortBy);
+  const sortedWorkflows = sortWorkflows(workflows ?? mockWorkflows, sortBy);
   return (
-    <Paper elevation={0} sx={{ p: 0, borderRadius: 0, border: 'none', bgcolor: '#fafafa' }}>
+    <Paper elevation={0} sx={{ p: 0, borderRadius: 2, border: '2px solid #e0e0e0', bgcolor: '#fafafa' }}>
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
         bgcolor: '#f5f5f5',
         borderRadius: 2,
-        border: '1px solid #e0e0e0',
+        border: 'none',
         width: { xs: '1100px', lg: '1320px' },
         minHeight: '64px',
         mb: 2
