@@ -154,9 +154,24 @@ export function OverviewContainer() {
             onBlur={() => setTimeout(() => setShowNameDropdown(false), 150)}
           />
           {showNameDropdown && nameResults.length > 0 && (
-            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
+            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
               {nameResults.map((n, i) => (
-                <MenuItem key={n + i} onMouseDown={() => { setSearch(n); setShowNameDropdown(false); nameDropdownClosedByClick.current = true; }}>{n}</MenuItem>
+                <Box key={n + i}>
+                  <MenuItem
+                    onMouseDown={() => { setSearch(n); setShowNameDropdown(false); nameDropdownClosedByClick.current = true; }}
+                    sx={{
+                      px: 2,
+                      py: 1.2,
+                      fontSize: '1rem',
+                      transition: 'background 0.2s',
+                      '&:hover': { bgcolor: '#f5f5f5', cursor: 'pointer' },
+                      borderRadius: 0,
+                    }}
+                  >
+                    {n}
+                  </MenuItem>
+                  {i < nameResults.length - 1 && <Box sx={{ height: 1, bgcolor: '#eee', mx: 2 }} />}
+                </Box>
               ))}
             </Box>
           )}
@@ -182,9 +197,24 @@ export function OverviewContainer() {
             onBlur={() => setTimeout(() => setShowTeamleadDropdown(false), 150)}
           />
           {showTeamleadDropdown && teamleadResults.length > 0 && (
-            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
+            <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
               {teamleadResults.map((tl, i) => (
-                <MenuItem key={tl + i} onMouseDown={() => { setTeamleadSearch(tl); setShowTeamleadDropdown(false); teamleadDropdownClosedByClick.current = true; }}>{tl}</MenuItem>
+                <Box key={tl + i}>
+                  <MenuItem
+                    onMouseDown={() => { setTeamleadSearch(tl); setShowTeamleadDropdown(false); teamleadDropdownClosedByClick.current = true; }}
+                    sx={{
+                      px: 2,
+                      py: 1.2,
+                      fontSize: '1rem',
+                      transition: 'background 0.2s',
+                      '&:hover': { bgcolor: '#f5f5f5', cursor: 'pointer' },
+                      borderRadius: 0,
+                    }}
+                  >
+                    {tl}
+                  </MenuItem>
+                  {i < teamleadResults.length - 1 && <Box sx={{ height: 1, bgcolor: '#eee', mx: 2 }} />}
+                </Box>
               ))}
             </Box>
           )}
