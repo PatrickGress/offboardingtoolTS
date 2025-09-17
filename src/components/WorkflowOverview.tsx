@@ -60,8 +60,9 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
             Ongoing Processes ({sortedWorkflows.length})
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1 }}>
+            <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
               {filtersOpen ? <CloseIcon /> : <FilterAltIcon />}
+              <span style={{ fontSize: '1rem', fontWeight: 500, color: '#1976d2' }}>{filtersOpen ? 'Close Filters' : 'Open Filters'}</span>
             </IconButton>
             <Popover
               open={filtersOpen}
