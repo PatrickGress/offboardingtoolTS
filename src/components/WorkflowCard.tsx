@@ -1,10 +1,8 @@
 import styles from './WorkflowCard.module.css';
 import { Card } from '@mui/material';
 
-export type StatusColor = 'red' | 'yellow' | 'green';
 export type SubflowStatus = {
   label: string;
-  color: StatusColor;
   completion: string;
 };
 
@@ -16,11 +14,20 @@ export type WorkflowData = {
   location: string;
   teamlead: string;
   exitDate: string;
-  dueDate: string;
   picture: string;
   statuses: SubflowStatus[];
   subflows: any;
 };
+
+// Helper to determine traffic light color for subflows
+function getSubflowTrafficLight(completion: string): string {
+  const [done, total] = completion.split('/').map(Number);
+  if (total === 0) return 'red'; // avoid division by zero
+  const percent = done / total;
+  if (percent < 0.5) return 'red';
+  if (percent < 1) return 'yellow';
+  return 'green';
+}
 
 export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
   const subflowLabels = ['HR', 'IT', 'Finance', 'Team'];
@@ -58,10 +65,11 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
           })()}
         </td>
         {subflowLabels.map((label, idx) => {
-          const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
+          const sf = data.statuses[idx] || { completion: '0/0' };
           let bg = '#e53935';
-          if (sf.color === 'yellow') bg = '#fbc02d';
-          if (sf.color === 'green') bg = '#43a047';
+          const color = getSubflowTrafficLight(sf.completion);
+          if (color === 'yellow') bg = '#fbc02d';
+          if (color === 'green') bg = '#43a047';
           return (
             <td key={label} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{sf.completion}</span>
@@ -99,10 +107,10 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
       </span>
       <div className={styles.statuses}>
         {subflowLabels.map((label, idx) => {
-          const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
+          const sf = data.statuses[idx] || { completion: '0/0' };
           return (
             <div key={label} className={styles.status}>
-              <span className={`${styles.trafficlight} ${styles[sf.color]}`}>{sf.completion}</span>
+              <span className={`${styles.trafficlight} ${styles[getSubflowTrafficLight(sf.completion)]}`}>{sf.completion}</span>
             </div>
           );
         })}

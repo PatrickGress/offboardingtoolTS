@@ -29,15 +29,39 @@ export function OverviewContainer() {
   // Memoized unique values for select fields
   const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
   const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
-  // Criticality values: extract all unique status colors from all workflows
+  // Criticality values: extract all unique traffic light colors from exit date and subflows
   const criticality = useMemo(() => {
-    const allColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => s.color));
+    // Get colors from exit dates
+    const dateColors = mockWorkflows.map(wf => getDateTrafficLight(wf.exitDate));
+    // Get colors from subflows
+    const subflowColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => getSubflowTrafficLight(s.completion)));
+    const allColors = [...dateColors, ...subflowColors];
     return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
   }, [mockWorkflows]);
 
   // Teamlead search state
   const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
   const filteredTeamleads = useMemo(() => teamleads.filter(tl => tl.toLowerCase().includes(teamleadSearch.toLowerCase())), [teamleadSearch, teamleads]);
+
+  // Helper to determine traffic light color for exit date
+  function getDateTrafficLight(exitDate: string): string {
+    const exit = new Date(exitDate);
+    const now = new Date();
+    const diffDays = (exit.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+    if (diffDays < 14) return 'red';
+    if (diffDays < 30) return 'yellow';
+    return 'green';
+  }
+
+  // Helper to determine traffic light color for subflows
+  function getSubflowTrafficLight(completion: string): string {
+    const [done, total] = completion.split('/').map(Number);
+    if (total === 0) return 'red';
+    const percent = done / total;
+    if (percent < 0.5) return 'red';
+    if (percent < 1) return 'yellow';
+    return 'green';
+  }
 
   // Filtering logic
   const filteredWorkflows = mockWorkflows.filter(wf => {
@@ -51,8 +75,12 @@ export function OverviewContainer() {
     if (teamleadLower && !wf.teamlead.toLowerCase().includes(teamleadLower)) return false;
     if (department && wf.department !== department) return false;
     if (location && wf.location !== location) return false;
-    // Criticality filter: show if ANY status color matches
-    if (crit && !wf.statuses.some(s => s.color === crit)) return false;
+    // Criticality filter: show if exit date OR ANY subflow matches
+    if (crit) {
+      const dateColor = getDateTrafficLight(wf.exitDate);
+      const anyStatusMatch = wf.statuses.some(s => getSubflowTrafficLight(s.completion) === crit);
+      if (!(dateColor === crit || anyStatusMatch)) return false;
+    }
     return true;
   });
 
