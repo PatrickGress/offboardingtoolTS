@@ -39,10 +39,10 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
         mb: 2
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 2 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, pl: 4 }}>
             Ongoing Processes ({sortedWorkflows.length})
           </Typography>
-          <FormControl size="small" sx={{ minWidth: 180 }}>
+          <FormControl size="small" sx={{ minWidth: 180, pr: 4 }}>
             <InputLabel id="sort-by-label">Sort by</InputLabel>
             <Select
               labelId="sort-by-label"
