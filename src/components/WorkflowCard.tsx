@@ -41,7 +41,7 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
         <td style={{ width: '14%', minWidth: 120 }}>
           <span style={{ fontSize: '0.92rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', display: 'flex', alignItems: 'center', height: 54 }}>{data.location}</span>
         </td>
-        <td style={{ width: '14%', minWidth: 120 }}>
+        <td style={{ width: '14%', minWidth: 120, textAlign: 'left' }}>
           {(() => {
             const today = new Date();
             const exit = new Date(data.exitDate);
@@ -50,7 +50,9 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
             if (diffDays <= 14) color = '#e53935';
             else if (diffDays <= 30) color = '#fbc02d';
             return (
-              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 110, height: 28, borderRadius: 14, margin: '0 6px 0 0', verticalAlign: 'middle', fontSize: '1rem', fontWeight: 600, color: '#fff', background: color }}>{data.exitDate}</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'flex-start', width: 110, height: 28, borderRadius: 14, margin: '0 6px 0 0', verticalAlign: 'middle', fontSize: '1rem', fontWeight: 600, color: '#fff', background: color, textAlign: 'left', justifyItems: 'center' }}>
+                <span style={{ width: '100%', textAlign: 'center' }}>{data.exitDate}</span>
+              </span>
             );
           })()}
         </td>
