@@ -26,6 +26,34 @@ export function OverviewContainer() {
     return () => clearTimeout(handler);
   }, [teamleadSearch]);
 
+  // Teamlead search state
+  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
+
+  // Search result lists for name/email/id and teamlead
+  const nameResults = useMemo(() => {
+    if (debouncedSearch.length < 3) return [];
+    const searchLower = debouncedSearch.toLowerCase();
+    return mockWorkflows
+      .filter(wf => wf.name.toLowerCase().includes(searchLower))
+      .map(wf => wf.name);
+  }, [debouncedSearch, mockWorkflows]);
+
+  const teamleadResults = useMemo(() => {
+    if (debouncedTeamleadSearch.length < 3) return [];
+    const searchLower = debouncedTeamleadSearch.toLowerCase();
+    return teamleads.filter(tl => tl.toLowerCase().includes(searchLower));
+  }, [debouncedTeamleadSearch, teamleads]);
+
+  const [showNameDropdown, setShowNameDropdown] = useState(false);
+  const [showTeamleadDropdown, setShowTeamleadDropdown] = useState(false);
+
+  useEffect(() => {
+    setShowNameDropdown(nameResults.length > 0);
+  }, [nameResults]);
+  useEffect(() => {
+    setShowTeamleadDropdown(teamleadResults.length > 0);
+  }, [teamleadResults]);
+
   // Memoized unique values for select fields
   const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
   const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
@@ -38,10 +66,6 @@ export function OverviewContainer() {
     const allColors = [...dateColors, ...subflowColors];
     return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
   }, [mockWorkflows]);
-
-  // Teamlead search state
-  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
-  const filteredTeamleads = useMemo(() => teamleads.filter(tl => tl.toLowerCase().includes(teamleadSearch.toLowerCase())), [teamleadSearch, teamleads]);
 
   // Helper to determine traffic light color for exit date
   function getDateTrafficLight(exitDate: string): string {
@@ -84,21 +108,6 @@ export function OverviewContainer() {
     return true;
   });
 
-  // Search result lists for name/email/id and teamlead
-  const nameResults = useMemo(() => {
-    if (debouncedSearch.length < 3) return [];
-    const searchLower = debouncedSearch.toLowerCase();
-    return mockWorkflows
-      .filter(wf => wf.name.toLowerCase().includes(searchLower))
-      .map(wf => wf.name);
-  }, [debouncedSearch, mockWorkflows]);
-
-  const teamleadResults = useMemo(() => {
-    if (debouncedTeamleadSearch.length < 3) return [];
-    const searchLower = debouncedTeamleadSearch.toLowerCase();
-    return teamleads.filter(tl => tl.toLowerCase().includes(searchLower));
-  }, [debouncedTeamleadSearch, teamleads]);
-
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f0f2f5', minHeight: '100vh', p: 0 }}>
       {/* Headline row */}
@@ -127,11 +136,13 @@ export function OverviewContainer() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             sx={{ minWidth: 220 }}
+            onFocus={() => setShowNameDropdown(nameResults.length > 0)}
+            onBlur={() => setTimeout(() => setShowNameDropdown(false), 150)}
           />
-          {nameResults.length > 0 && (
+          {showNameDropdown && nameResults.length > 0 && (
             <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
               {nameResults.map((n, i) => (
-                <MenuItem key={n + i}>{n}</MenuItem>
+                <MenuItem key={n + i} onMouseDown={() => { setSearch(n); setShowNameDropdown(false); }}>{n}</MenuItem>
               ))}
             </Box>
           )}
@@ -153,11 +164,13 @@ export function OverviewContainer() {
             value={teamleadSearch}
             onChange={e => setTeamleadSearch(e.target.value)}
             sx={{ minWidth: 220 }}
+            onFocus={() => setShowTeamleadDropdown(teamleadResults.length > 0)}
+            onBlur={() => setTimeout(() => setShowTeamleadDropdown(false), 150)}
           />
-          {teamleadResults.length > 0 && (
+          {showTeamleadDropdown && teamleadResults.length > 0 && (
             <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
               {teamleadResults.map((tl, i) => (
-                <MenuItem key={tl + i}>{tl}</MenuItem>
+                <MenuItem key={tl + i} onMouseDown={() => { setTeamleadSearch(tl); setShowTeamleadDropdown(false); }}>{tl}</MenuItem>
               ))}
             </Box>
           )}
