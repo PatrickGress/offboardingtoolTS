@@ -43,7 +43,15 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
   };
 
   return (
-    <Paper elevation={0} sx={{ p: 0, borderRadius: 2, border: '2px solid #e0e0e0', bgcolor: '#fafafa' }}>
+    <Paper elevation={0} sx={{
+      p: 0,
+      borderRadius: 2,
+      border: '1px solid #e0e0e0',
+      bgcolor: '#fafafa',
+      width: { xs: '900px', lg: '1100px' },
+      ml: { xs: 2, lg: 6 }, // restore previous left margin
+      boxShadow: 'none'
+    }}>
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -51,9 +59,9 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
         bgcolor: '#f5f5f5',
         borderRadius: 2,
         border: 'none',
-        width: { xs: '1100px', lg: '1320px' },
         minHeight: '64px',
         mb: 2
+        // remove inner left margin
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, pl: 4 }}>

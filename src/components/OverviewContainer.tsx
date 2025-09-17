@@ -144,31 +144,35 @@ export function OverviewContainer() {
         </Box>
       </Box>
       {/* Overview table below */}
-      <WorkflowOverview
-        onWorkflowClick={() => {}}
-        workflows={filteredWorkflows}
-        filtersOpen={filtersOpen}
-        setFiltersOpen={setFiltersOpen}
-        filterPanelProps={{
-          search, setSearch,
-          department, setDepartment,
-          location, setLocation,
-          crit, setCrit,
-          teamleadSearch, setTeamleadSearch,
-          departments, locations, criticality,
-          onClear: () => {
-            setSearch('');
-            setDepartment('');
-            setLocation('');
-            setCrit('');
-            setTeamleadSearch('');
-          },
-          nameResults, teamleadResults,
-          showNameDropdown, setShowNameDropdown,
-          showTeamleadDropdown, setShowTeamleadDropdown,
-          nameDropdownClosedByClick, teamleadDropdownClosedByClick
-        }}
-      />
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+        <Box sx={{ ml: 2 }}> {/* add a bit of left margin for nested look */}
+          <WorkflowOverview
+            onWorkflowClick={() => {}}
+            workflows={filteredWorkflows}
+            filtersOpen={filtersOpen}
+            setFiltersOpen={setFiltersOpen}
+            filterPanelProps={{
+              search, setSearch,
+              department, setDepartment,
+              location, setLocation,
+              crit, setCrit,
+              teamleadSearch, setTeamleadSearch,
+              departments, locations, criticality,
+              onClear: () => {
+                setSearch('');
+                setDepartment('');
+                setLocation('');
+                setCrit('');
+                setTeamleadSearch('');
+              },
+              nameResults, teamleadResults,
+              showNameDropdown, setShowNameDropdown,
+              showTeamleadDropdown, setShowTeamleadDropdown,
+              nameDropdownClosedByClick, teamleadDropdownClosedByClick
+            }}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 }
