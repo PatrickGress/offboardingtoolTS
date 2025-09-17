@@ -21,8 +21,55 @@ export type WorkflowData = {
   subflows: any;
 };
 
-export function WorkflowCard({ data, onNameClick }: { data: WorkflowData; onNameClick: () => void }) {
+export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
   const subflowLabels = ['HR', 'IT', 'Finance', 'Team'];
+  if (isTableRow) {
+    return (
+      <tr style={{ borderBottom: isLast ? 'none' : '1px solid #e0e0e0', background: '#fff', height: 64 }}>
+        <td style={{ width: '22%', minWidth: 56, paddingLeft: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={data.picture} alt={data.name} style={{ width: 54, height: 54, borderRadius: '50%', objectFit: 'cover', marginRight: 12, alignSelf: 'center' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', maxWidth: 340, textAlign: 'center', height: 54 }}>
+              <span style={{ fontSize: '1rem', fontWeight: 600, color: '#1976d2', paddingBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 340, textAlign: 'left', cursor: 'pointer' }} onClick={onNameClick}>{data.name}</span>
+              <span style={{ fontSize: '0.85rem', color: '#555', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 340, marginRight: 8, textAlign: 'center' }}>{data.email}</span>
+            </div>
+          </div>
+        </td>
+        <td style={{ width: '14%', minWidth: 120, maxWidth: 420 }}>
+          <span style={{ fontSize: '0.92rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', display: 'flex', alignItems: 'center', height: 54 }}>{data.department}</span>
+        </td>
+        <td style={{ width: '14%', minWidth: 120 }}>
+          <span style={{ fontSize: '0.92rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', display: 'flex', alignItems: 'center', height: 54 }}>{data.location}</span>
+        </td>
+        <td style={{ width: '14%', minWidth: 120 }}>
+          {(() => {
+            const today = new Date();
+            const exit = new Date(data.exitDate);
+            const diffDays = Math.ceil((exit.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+            let color = '#43a047';
+            if (diffDays <= 14) color = '#e53935';
+            else if (diffDays <= 30) color = '#fbc02d';
+            return (
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 110, height: 28, borderRadius: 14, margin: '0 6px 0 0', verticalAlign: 'middle', fontSize: '1rem', fontWeight: 600, color: '#fff', background: color }}>{data.exitDate}</span>
+            );
+          })()}
+        </td>
+        <td style={{ width: '36%', minWidth: 320, paddingRight: 24 }}>
+          <div style={{ display: 'flex', gap: 18, alignItems: 'center', minWidth: 320, height: 54 }}>
+            {subflowLabels.map((label, idx) => {
+              const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
+              let bg = '#e53935';
+              if (sf.color === 'yellow') bg = '#fbc02d';
+              if (sf.color === 'green') bg = '#43a047';
+              return (
+                <span key={label} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{sf.completion}</span>
+              );
+            })}
+          </div>
+        </td>
+      </tr>
+    );
+  }
   return (
     <Card className={styles.tableRow} sx={{ m: 0, p: 0, boxShadow: 'none', borderRadius: 0, bgcolor: '#fff' }}>
       <div className={styles.employee}>

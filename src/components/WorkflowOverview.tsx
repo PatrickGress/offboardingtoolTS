@@ -1,4 +1,4 @@
-import { Box, Typography, Grid, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WorkflowCard } from './WorkflowCard';
 import type { WorkflowData } from './WorkflowCard';
 import { useState } from 'react';
@@ -56,27 +56,28 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ width: '100%', height: '1px', bgcolor: '#e0e0e0', mb: 2 }} />
-        <Box sx={{ display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: '1rem', mb: 0, bgcolor: 'inherit', borderRadius: 0, minHeight: '64px', width: '100%' }}>
-          <span style={{ flex: '0 0 22%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 56 }}>Employee</span>
-          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, maxWidth: 420, textAlign: 'left' }}>Department</span>
-          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Location</span>
-          <span style={{ flex: '1 1 14%', display: 'flex', alignItems: 'center', justifyContent: 'left', minWidth: 120, textAlign: 'left' }}>Exit Date</span>
-          <span style={{ flex: '1 1 36%', display: 'flex', gap: 18, alignItems: 'center', minWidth: 320 }}>
-            <span style={{ minWidth: 60, textAlign: 'center' }}>HR</span>
-            <span style={{ minWidth: 60, textAlign: 'center' }}>IT</span>
-            <span style={{ minWidth: 60, textAlign: 'center' }}>Finance</span>
-            <span style={{ minWidth: 60, textAlign: 'center' }}>Team</span>
-          </span>
-        </Box>
+        <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fafafa' }}>
+          <thead>
+            <tr style={{ background: '#f5f5f5', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0', height: 64 }}>
+              <th style={{ width: '22%', minWidth: 56, textAlign: 'left', fontWeight: 600, fontSize: '1rem', paddingLeft: 78 }}>Employee</th>
+              <th style={{ width: '14%', minWidth: 120, maxWidth: 420, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Department</th>
+              <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Location</th>
+              <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Exit Date</th>
+              <th style={{ width: '36%', minWidth: 320, textAlign: 'left', fontWeight: 600, fontSize: '1rem', paddingRight: 24 }}>
+                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>HR</span>
+                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>IT</span>
+                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>Finance</span>
+                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>Team</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedWorkflows.map((wf, idx) => (
+              <WorkflowCard key={wf.id} data={wf} onNameClick={() => onWorkflowClick(wf.id)} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
+            ))}
+          </tbody>
+        </table>
       </Box>
-      <Grid container spacing={0} sx={{ borderRadius: 0, boxShadow: 'none', bgcolor: '#fafafa', m: 0, p: 0 }}>
-        {sortedWorkflows.map((wf, idx) => (
-          <Box key={wf.id} sx={{ m: 0, p: 0, borderBottom: idx < sortedWorkflows.length - 1 ? '1px solid #e0e0e0' : 'none', borderRadius: 0, boxShadow: 'none', bgcolor: '#fafafa' }}>
-            <WorkflowCard data={wf} onNameClick={() => onWorkflowClick(wf.id)} />
-          </Box>
-        ))}
-      </Grid>
     </Paper>
   );
 }
