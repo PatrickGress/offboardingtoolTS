@@ -10,35 +10,46 @@ export function OverviewContainer() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [department, setDepartment] = useState('');
-  const [teamlead, setTeamlead] = useState('');
   const [location, setLocation] = useState('');
   const [crit, setCrit] = useState('');
+  const [teamlead, setTeamlead] = useState('');
+  const [teamleadSearch, setTeamleadSearch] = useState('');
+  const [debouncedTeamleadSearch, setDebouncedTeamleadSearch] = useState('');
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 500);
     return () => clearTimeout(handler);
   }, [search]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedTeamleadSearch(teamleadSearch), 500);
+    return () => clearTimeout(handler);
+  }, [teamleadSearch]);
+
+  // Memoized unique values for select fields
+  const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
+  const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
+  const criticality = useMemo(() => getUnique(mockWorkflows, 'criticality').map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) })), [mockWorkflows]);
+
+  // Teamlead search state
+  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
+  const filteredTeamleads = useMemo(() => teamleads.filter(tl => tl.toLowerCase().includes(teamleadSearch.toLowerCase())), [teamleadSearch, teamleads]);
+
   // Filtering logic
   const filteredWorkflows = mockWorkflows.filter(wf => {
     const searchLower = debouncedSearch.toLowerCase();
+    const teamleadLower = debouncedTeamleadSearch.toLowerCase();
     if (searchLower && !(
       wf.name.toLowerCase().includes(searchLower) ||
       wf.email.toLowerCase().includes(searchLower) ||
       wf.id.toLowerCase().includes(searchLower)
     )) return false;
+    if (teamleadLower && !wf.teamlead.toLowerCase().includes(teamleadLower)) return false;
     if (department && wf.department !== department) return false;
     if (location && wf.location !== location) return false;
-    if (teamlead && wf.teamlead !== teamlead) return false;
     if (crit && wf.criticality !== crit) return false;
     return true;
   });
-
-  // Memoized unique values for select fields
-  const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
-  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
-  const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
-  const criticality = useMemo(() => getUnique(mockWorkflows, 'criticality').map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) })), [mockWorkflows]);
 
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f0f2f5', minHeight: '100vh', p: 0 }}>
@@ -77,14 +88,15 @@ export function OverviewContainer() {
             ))}
           </Select>
         </FormControl>
-        <FormControl size="small" sx={{ minWidth: 140 }}>
-          <InputLabel>Teamlead</InputLabel>
-          <Select value={teamlead} label="Teamlead" onChange={e => setTeamlead(e.target.value)}>
-            <MenuItem value="">All</MenuItem>
-            {teamleads.map(tl => (
-              <MenuItem key={tl} value={tl}>{tl}</MenuItem>
-            ))}
-          </Select>
+        <FormControl size="small" sx={{ minWidth: 220 }}>
+          <TextField
+            label="Search Teamlead"
+            variant="outlined"
+            size="small"
+            value={teamleadSearch}
+            onChange={e => setTeamleadSearch(e.target.value)}
+            sx={{ minWidth: 220 }}
+          />
         </FormControl>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Location</InputLabel>
@@ -104,6 +116,20 @@ export function OverviewContainer() {
             ))}
           </Select>
         </FormControl>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ minWidth: 160, fontWeight: 700, boxShadow: 2, ml: 2, height: 40 }}
+          onClick={() => {
+            setSearch('');
+            setDepartment('');
+            setLocation('');
+            setCrit('');
+            setTeamleadSearch('');
+          }}
+        >
+          Clear Filters
+        </Button>
       </Paper>
       {/* Spacing below filter/search box */}
       <Box sx={{ height: 8 }} />
