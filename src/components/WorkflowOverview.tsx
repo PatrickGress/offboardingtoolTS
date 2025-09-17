@@ -59,16 +59,14 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
         <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fafafa' }}>
           <thead>
             <tr style={{ background: '#f5f5f5', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0', height: 64 }}>
-              <th style={{ width: '22%', minWidth: 56, textAlign: 'left', fontWeight: 600, fontSize: '1rem', paddingLeft: 78 }}>Employee</th>
+              <th style={{ width: '22%', minWidth: 56, textAlign: 'left', fontWeight: 600, fontSize: '1rem', paddingLeft: 24 }}>Employee</th>
               <th style={{ width: '14%', minWidth: 120, maxWidth: 420, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Department</th>
               <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Location</th>
               <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Exit Date</th>
-              <th style={{ width: '36%', minWidth: 320, textAlign: 'left', fontWeight: 600, fontSize: '1rem', paddingRight: 24 }}>
-                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>HR</span>
-                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>IT</span>
-                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>Finance</span>
-                <span style={{ minWidth: 60, textAlign: 'center', display: 'inline-block' }}>Team</span>
-              </th>
+              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>HR</th>
+              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>IT</th>
+              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>Finance</th>
+              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>Team</th>
             </tr>
           </thead>
           <tbody>

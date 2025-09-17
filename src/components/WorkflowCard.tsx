@@ -41,7 +41,7 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
         <td style={{ width: '14%', minWidth: 120 }}>
           <span style={{ fontSize: '0.92rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'left', display: 'flex', alignItems: 'center', height: 54 }}>{data.location}</span>
         </td>
-        <td style={{ width: '14%', minWidth: 120, textAlign: 'left' }}>
+        <td style={{ width: '4%', minWidth: 60, textAlign: 'left' }}>
           {(() => {
             const today = new Date();
             const exit = new Date(data.exitDate);
@@ -56,19 +56,17 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
             );
           })()}
         </td>
-        <td style={{ width: '36%', minWidth: 320, paddingRight: 24 }}>
-          <div style={{ display: 'flex', gap: 18, alignItems: 'center', minWidth: 320, height: 54 }}>
-            {subflowLabels.map((label, idx) => {
-              const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
-              let bg = '#e53935';
-              if (sf.color === 'yellow') bg = '#fbc02d';
-              if (sf.color === 'green') bg = '#43a047';
-              return (
-                <span key={label} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{sf.completion}</span>
-              );
-            })}
-          </div>
-        </td>
+        {subflowLabels.map((label, idx) => {
+          const sf = data.statuses[idx] || { color: 'red', completion: '0/0' };
+          let bg = '#e53935';
+          if (sf.color === 'yellow') bg = '#fbc02d';
+          if (sf.color === 'green') bg = '#43a047';
+          return (
+            <td key={label} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{sf.completion}</span>
+            </td>
+          );
+        })}
       </tr>
     );
   }
