@@ -36,8 +36,6 @@ export function WorkflowOverview({ onWorkflowClick }: { onWorkflowClick: (id: st
         border: '1px solid #e0e0e0',
         width: { xs: '1100px', lg: '1320px' },
         minHeight: '64px',
-        paddingLeft: { xs: '32px', lg: '64px' },
-        paddingRight: { xs: '32px', lg: '64px' },
         mb: 2
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 2 }}>
