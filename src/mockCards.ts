@@ -1,7 +1,7 @@
 import type { WorkflowData } from './components/WorkflowCard';
 
 export const mockWorkflows: WorkflowData[] = [
-  // All yellow
+  // All red (date < 14 days, all subflows < 50%)
   {
     id: '1',
     name: 'Hans Herman',
@@ -9,17 +9,17 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'IT',
     location: 'Berlin',
     teamlead: 'Lisa Schmidt',
-    exitDate: '2025-09-20',
+    exitDate: '2025-09-25', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
-      { label: 'HR', completion: '1/3' },
-      { label: 'IT', completion: '0/2' },
-      { label: 'Finance', completion: '2/2' },
-      { label: 'Team', completion: '2/4' },
+      { label: 'HR', completion: '0/2' },
+      { label: 'IT', completion: '0/3' },
+      { label: 'Finance', completion: '0/2' },
+      { label: 'Team', completion: '0/4' },
     ],
     subflows: [],
   },
-  // All red
+  // All yellow (date 14-30 days, all subflows 50-99%)
   {
     id: '2',
     name: 'Lisa Schmidt',
@@ -27,17 +27,17 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'HR',
     location: 'Munich',
     teamlead: 'John Miller',
-    exitDate: '2025-09-25',
+    exitDate: '2025-10-20', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
-      { label: 'HR', completion: '0/1' },
-      { label: 'IT', completion: '1/2' },
-      { label: 'Finance', completion: '1/1' },
-      { label: 'Team', completion: '1/1' },
+      { label: 'HR', completion: '1/2' }, // 50%
+      { label: 'IT', completion: '2/3' }, // ~67%
+      { label: 'Finance', completion: '1/2' }, // 50%
+      { label: 'Team', completion: '3/4' }, // 75%
     ],
     subflows: [],
   },
-  // All red
+  // All yellow (date 14-30 days, all subflows 50-99%)
   {
     id: '3',
     name: 'Markus Braun',
@@ -45,17 +45,17 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'Finance',
     location: 'Berlin',
     teamlead: 'Emily Clark',
-    exitDate: '2025-10-01',
+    exitDate: '2025-10-25', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2' },
-      { label: 'IT', completion: '1/3' },
-      { label: 'Finance', completion: '0/2' },
-      { label: 'Team', completion: '2/4' },
+      { label: 'HR', completion: '1/2' },
+      { label: 'IT', completion: '2/3' },
+      { label: 'Finance', completion: '1/2' },
+      { label: 'Team', completion: '3/4' },
     ],
     subflows: [],
   },
-  // Mixed
+  // All yellow subflows, date in red
   {
     id: '4',
     name: 'Julia Meier',
@@ -63,13 +63,13 @@ export const mockWorkflows: WorkflowData[] = [
     department: 'IT',
     location: 'Hamburg',
     teamlead: 'Lisa Schmidt',
-    exitDate: '2025-10-05',
+    exitDate: '2025-09-28', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/4.jpg',
     statuses: [
       { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '3/3' },
+      { label: 'IT', completion: '2/3' },
       { label: 'Finance', completion: '1/2' },
-      { label: 'Team', completion: '0/2' },
+      { label: 'Team', completion: '3/4' },
     ],
     subflows: [],
   },
