@@ -11,8 +11,6 @@
 .avatar {
   width: 54px;
   height: 54px;
-  margin-right: 36px;
-  margin-left: 0;
   align-self: center;
   border-radius: 50%;
   object-fit: cover;
