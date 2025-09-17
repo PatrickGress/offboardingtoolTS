@@ -1,16 +1,10 @@
 import { Box, Typography, Button, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WorkflowOverview } from './WorkflowOverview';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { mockWorkflows } from '../mockCards';
 
-const departments = ['IT', 'HR', 'Finance', 'Team'];
-const teamleads = ['Alice', 'Bob', 'Charlie', 'Diana'];
-const locations = ['Berlin', 'Munich', 'Hamburg'];
-const criticality = [
-  { value: 'red', label: 'Red' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'green', label: 'Green' }
-];
+// Dynamically extract unique values from mockWorkflows
+const getUnique = (arr: any[], key: string) => Array.from(new Set(arr.map(item => item[key]).filter(Boolean)));
 
 export function OverviewContainer() {
   const [search, setSearch] = useState('');
@@ -39,6 +33,12 @@ export function OverviewContainer() {
     if (crit && wf.criticality !== crit) return false;
     return true;
   });
+
+  // Memoized unique values for select fields
+  const departments = useMemo(() => getUnique(mockWorkflows, 'department'), [mockWorkflows]);
+  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), [mockWorkflows]);
+  const locations = useMemo(() => getUnique(mockWorkflows, 'location'), [mockWorkflows]);
+  const criticality = useMemo(() => getUnique(mockWorkflows, 'criticality').map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) })), [mockWorkflows]);
 
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f0f2f5', minHeight: '100vh', p: 0 }}>
