@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WorkflowOverview } from './WorkflowOverview';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { mockWorkflows } from '../mockCards';
 
 // Dynamically extract unique values from mockWorkflows
@@ -47,11 +47,25 @@ export function OverviewContainer() {
   const [showNameDropdown, setShowNameDropdown] = useState(false);
   const [showTeamleadDropdown, setShowTeamleadDropdown] = useState(false);
 
+  // Track if dropdown was closed by click to prevent reopening
+  const nameDropdownClosedByClick = useRef(false);
+  const teamleadDropdownClosedByClick = useRef(false);
+
   useEffect(() => {
-    setShowNameDropdown(nameResults.length > 0);
+    if (nameDropdownClosedByClick.current) {
+      setShowNameDropdown(false);
+      nameDropdownClosedByClick.current = false;
+    } else {
+      setShowNameDropdown(nameResults.length > 0);
+    }
   }, [nameResults]);
   useEffect(() => {
-    setShowTeamleadDropdown(teamleadResults.length > 0);
+    if (teamleadDropdownClosedByClick.current) {
+      setShowTeamleadDropdown(false);
+      teamleadDropdownClosedByClick.current = false;
+    } else {
+      setShowTeamleadDropdown(teamleadResults.length > 0);
+    }
   }, [teamleadResults]);
 
   // Memoized unique values for select fields
@@ -142,7 +156,7 @@ export function OverviewContainer() {
           {showNameDropdown && nameResults.length > 0 && (
             <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
               {nameResults.map((n, i) => (
-                <MenuItem key={n + i} onMouseDown={() => { setSearch(n); setShowNameDropdown(false); }}>{n}</MenuItem>
+                <MenuItem key={n + i} onMouseDown={() => { setSearch(n); setShowNameDropdown(false); nameDropdownClosedByClick.current = true; }}>{n}</MenuItem>
               ))}
             </Box>
           )}
@@ -170,7 +184,7 @@ export function OverviewContainer() {
           {showTeamleadDropdown && teamleadResults.length > 0 && (
             <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0' }}>
               {teamleadResults.map((tl, i) => (
-                <MenuItem key={tl + i} onMouseDown={() => { setTeamleadSearch(tl); setShowTeamleadDropdown(false); }}>{tl}</MenuItem>
+                <MenuItem key={tl + i} onMouseDown={() => { setTeamleadSearch(tl); setShowTeamleadDropdown(false); teamleadDropdownClosedByClick.current = true; }}>{tl}</MenuItem>
               ))}
             </Box>
           )}
