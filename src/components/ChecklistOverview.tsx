@@ -3,15 +3,18 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useState, useEffect } from 'react';
-import { initialAreas, subflowMock } from '../mockAreas';
+import { initialAreas } from '../mockAreas';
 import type { Area } from '../mockAreas';
+import { subflowCards } from '../mockSubflowCards';
+import { subflowSteps } from '../mockSubflowSteps';
 
 export function ChecklistOverview() {
   const [areas, setAreas] = useState<Area[]>(() => {
     const stored = localStorage.getItem('areas');
     return stored ? JSON.parse(stored) : initialAreas;
   });
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  // Use an array of expanded area ids for true multi-expand
+  const [expandedAreas, setExpandedAreas] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaShort, setNewAreaShort] = useState('');
@@ -20,8 +23,12 @@ export function ChecklistOverview() {
     localStorage.setItem('areas', JSON.stringify(areas));
   }, [areas]);
 
-  const handleExpand = (area: string) => {
-    setExpanded(prev => ({ ...prev, [area]: !prev[area] }));
+  const handleExpand = (areaId: string) => {
+    setExpandedAreas(prev =>
+      prev.includes(areaId)
+        ? prev.filter(id => id !== areaId)
+        : [...prev, areaId]
+    );
   };
 
   const handleAddArea = () => {
@@ -32,7 +39,8 @@ export function ChecklistOverview() {
 
   const handleModalSubmit = () => {
     if (newAreaName && newAreaShort && newAreaShort.length <= 7) {
-      const updated = [...areas, { name: newAreaName, shortname: newAreaShort }];
+      const newId = newAreaShort.trim().toLowerCase() || newAreaName.trim().toLowerCase().replace(/\s+/g, '-');
+      const updated = [...areas, { id: newId, name: newAreaName, shortname: newAreaShort }];
       setAreas(updated);
       setModalOpen(false);
     }
@@ -49,28 +57,42 @@ export function ChecklistOverview() {
         </Button>
       </Box>
       <Box sx={{ width: '1100px', ml: 8 }}>
-        {areas.map(area => (
-          <Card key={area.name} sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1rem' }}>{area.name}</Typography>
-              <IconButton onClick={() => handleExpand(area.name)}>
-                {expanded[area.name] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-              </IconButton>
-            </Box>
-            <Collapse in={expanded[area.name]}>
-              <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                {(subflowMock[area.name] || []).map(subflow => (
-                  <Card key={subflow} sx={{ minWidth: 180, p: 2, bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: '0.95rem' }}>{subflow}</Typography>
-                  </Card>
-                ))}
-                <Card sx={{ minWidth: 180, p: 2, bgcolor: '#e3f2fd', borderRadius: 2, boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                  <AddCircleOutlineIcon color="primary" />
-                </Card>
+        {areas.map(area => {
+          const cards = subflowCards.filter(card => card.areaIds.includes(area.id));
+          const isExpanded = expandedAreas.includes(area.id);
+          return (
+            <Card key={area.id} sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.05rem' }}>{area.name}</Typography>
+                <IconButton onClick={() => handleExpand(area.id)}>
+                  {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </IconButton>
               </Box>
-            </Collapse>
-          </Card>
-        ))}
+              <Collapse in={isExpanded}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, mt: 2 }}>
+                  {cards.map(card => (
+                    <Card key={card.id} sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', p: 2, overflow: 'hidden' }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '1.08rem', mb: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                        {card.name}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#666', mb: 1, fontSize: '0.98rem', width: '100%', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {card.useCase}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 'auto' }}>
+                        <Typography variant="caption" sx={{ color: '#1976d2', fontWeight: 600, fontSize: '0.97rem' }}>
+                          {card.checkpointIds.length} steps
+                        </Typography>
+                      </Box>
+                    </Card>
+                  ))}
+                  <Card sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#e3f2fd', borderRadius: 2, boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', p: 2 }}>
+                    <AddCircleOutlineIcon color="primary" sx={{ fontSize: 32 }} />
+                  </Card>
+                </Box>
+              </Collapse>
+            </Card>
+          );
+        })}
       </Box>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: '#fff', p: 4, borderRadius: 2, boxShadow: 4, minWidth: 340 }}>
