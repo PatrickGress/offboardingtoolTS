@@ -28,7 +28,7 @@ function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
   }
 }
 
-export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps }: any) {
+export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: any) {
   const [sortBy, setSortBy] = useState('exitDate');
   const sortedWorkflows = sortWorkflows(workflows ?? mockWorkflows, sortBy);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,7 +49,7 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
       border: '1px solid #e0e0e0',
       bgcolor: '#fafafa',
       width: { xs: '900px', lg: '1100px' },
-      ml: { xs: 2, lg: 6 }, // restore previous left margin
+      ml: { xs: 2, lg: 6 },
       boxShadow: 'none'
     }}>
       <Box sx={{
@@ -61,16 +61,20 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
         border: 'none',
         minHeight: '64px',
         mb: 2
-        // remove inner left margin
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, pl: 4 }}>
             Ongoing Processes ({sortedWorkflows.length})
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1, display: 'flex', alignItems: 'center', gap: 1, position: 'relative' }}>
               {filtersOpen ? <CloseIcon /> : <FilterAltIcon />}
-              <span style={{ fontSize: '1rem', fontWeight: 500, color: '#1976d2' }}>{filtersOpen ? 'Close Filters' : 'Open Filters'}</span>
+              {!filtersOpen && activeFilterCount > 0 && (
+                <Box sx={{ ml: 0.5, bgcolor: '#d32f2f', color: '#fff', borderRadius: '50%', minWidth: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.95rem', fontWeight: 700, boxShadow: 2 }}>
+                  {activeFilterCount}
+                </Box>
+              )}
+              <span style={{ fontSize: '1rem', fontWeight: 500, color: '#1976d2', marginLeft: 8 }}>{filtersOpen ? 'Close Filters' : 'Open Filters'}</span>
             </IconButton>
             <Popover
               open={filtersOpen}

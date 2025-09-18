@@ -127,6 +127,9 @@ export function OverviewContainer() {
     return true;
   });
 
+  // Compute active filter count
+  const activeFilterCount = [search, department, location, crit, teamleadSearch].filter(v => v && v !== '').length;
+
   // Remove filter UI from main render
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mx: 'auto', mr: 6 }}>
@@ -175,6 +178,7 @@ export function OverviewContainer() {
               showTeamleadDropdown, setShowTeamleadDropdown,
               nameDropdownClosedByClick, teamleadDropdownClosedByClick
             }}
+            activeFilterCount={activeFilterCount}
           />
         </Box>
       </Box>
