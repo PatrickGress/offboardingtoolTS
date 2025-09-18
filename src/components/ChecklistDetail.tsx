@@ -14,7 +14,7 @@ export function ChecklistDetail() {
   }
 
   return (
-    <Box sx={{ maxWidth: 700, mx: 'auto', mt: 6, bgcolor: '#f5f5f5', p: 4, borderRadius: 2, boxShadow: 2 }}>
+    <Box sx={{ width: '1100px', maxWidth: 1200, ml: 8, mt: 6, bgcolor: '#f5f5f5', p: 4, borderRadius: 2, boxShadow: 2 }}>
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>{card.name}</Typography>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>Checkpoints</Typography>
