@@ -207,6 +207,7 @@ export function OverviewContainer() {
               nameDropdownClosedByClick, teamleadDropdownClosedByClick,
               subflowNames,
               subflowFilters,
+              setSubflowFilters,
               handleSubflowFilterChange
             }}
             activeFilterCount={activeFilterCount}
