@@ -1,11 +1,11 @@
 import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, IconButton, Popover } from '@mui/material';
-import { WorkflowCard } from './WorkflowCard';
-import type { WorkflowOverviewProps } from './OverviewContainer';
-import { useState } from 'react';
-import { mockWorkflows } from '../mockCards';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloseIcon from '@mui/icons-material/Close';
+import { useState } from 'react';
+import { WorkflowCard } from './WorkflowCard';
 import { FilterPanel } from './FilterPanel';
+import type { WorkflowOverviewProps } from './OverviewContainer';
+import { mockWorkflows } from '../mockCards';
 
 const sortOptions = [
   { value: 'exitDate', label: 'Exit Date (soonest)' },

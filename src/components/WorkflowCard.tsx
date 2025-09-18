@@ -1,5 +1,5 @@
-import styles from './WorkflowCard.module.css';
 import { Card } from '@mui/material';
+import styles from './WorkflowCard.module.css';
 
 export type SubflowStatus = {
   label: string;
