@@ -2,31 +2,23 @@ import { Box, Typography, Button, Card, Collapse, IconButton, Modal, TextField }
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useState } from 'react';
-
-// Mock data for areas
-export type Area = { name: string; shortname: string };
-const initialAreas: Area[] = [
-  { name: 'HR', shortname: 'HR' },
-  { name: 'Finance', shortname: 'FIN' },
-  { name: 'IT', shortname: 'IT' },
-  { name: 'Team', shortname: 'TEAM' },
-];
-
-// Mock data for subflows per area
-const subflowMock: Record<string, string[]> = {
-  HR: ['Onboarding', 'Exit Interview'],
-  Finance: ['Payroll', 'Expense Approval'],
-  IT: ['Laptop Return', 'Account Deactivation'],
-  Team: ['Knowledge Transfer', 'Farewell'],
-};
+import { useState, useEffect } from 'react';
+import { initialAreas, subflowMock } from '../mockAreas';
+import type { Area } from '../mockAreas';
 
 export function ChecklistOverview() {
-  const [areas, setAreas] = useState<Area[]>(initialAreas);
+  const [areas, setAreas] = useState<Area[]>(() => {
+    const stored = localStorage.getItem('areas');
+    return stored ? JSON.parse(stored) : initialAreas;
+  });
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaShort, setNewAreaShort] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('areas', JSON.stringify(areas));
+  }, [areas]);
 
   const handleExpand = (area: string) => {
     setExpanded(prev => ({ ...prev, [area]: !prev[area] }));
@@ -40,7 +32,8 @@ export function ChecklistOverview() {
 
   const handleModalSubmit = () => {
     if (newAreaName && newAreaShort && newAreaShort.length <= 7) {
-      setAreas([...areas, { name: newAreaName, shortname: newAreaShort }]);
+      const updated = [...areas, { name: newAreaName, shortname: newAreaShort }];
+      setAreas(updated);
       setModalOpen(false);
     }
   };
