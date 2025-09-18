@@ -171,7 +171,9 @@ export function OverviewContainer() {
   });
 
   // Active filter count
-  const activeFilterCount = [search, department, location, crit, teamleadSearch].filter(v => v && v !== '').length;
+  const activeFilterCount = [search, department, location, crit, teamleadSearch]
+    .filter(v => v && v !== '').length +
+    Object.values(subflowFilters).filter(v => v && v !== '').length;
 
   // Handlers
   const handleSubflowFilterChange = (subflow: string, value: string) => {
