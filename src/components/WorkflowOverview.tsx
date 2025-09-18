@@ -1,6 +1,6 @@
 import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, IconButton, Popover } from '@mui/material';
 import { WorkflowCard } from './WorkflowCard';
-import type { WorkflowData } from './WorkflowCard';
+import type { WorkflowOverviewProps } from './OverviewContainer';
 import { useState } from 'react';
 import { mockWorkflows } from '../mockCards';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -14,7 +14,7 @@ const sortOptions = [
   { value: 'nameZA', label: 'Name Z-A' },
 ];
 
-function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
+function sortWorkflows(workflows: any[], sortBy: string) {
   switch (sortBy) {
     case 'nameAZ':
       return [...workflows].sort((a, b) => a.name.localeCompare(b.name));
@@ -28,7 +28,7 @@ function sortWorkflows(workflows: WorkflowData[], sortBy: string) {
   }
 }
 
-export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: any) {
+export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: WorkflowOverviewProps) {
   const [sortBy, setSortBy] = useState('exitDate');
   const sortedWorkflows = sortWorkflows(workflows ?? mockWorkflows, sortBy);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -118,7 +118,7 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
           </thead>
           <tbody>
             {sortedWorkflows.map((wf, idx) => (
-              <WorkflowCard key={wf.id} data={wf} onNameClick={() => onWorkflowClick(wf.id)} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
+              <WorkflowCard key={wf.id} data={wf} onNameClick={onWorkflowClick} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
             ))}
           </tbody>
         </table>

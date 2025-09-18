@@ -1,6 +1,7 @@
 import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Button, Paper } from '@mui/material';
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import type { FilterPanelProps } from './OverviewContainer';
 
 export function FilterPanel({
   search,
@@ -27,8 +28,8 @@ export function FilterPanel({
   teamleadDropdownClosedByClick,
   subflowNames,
   subflowFilters,
-  setSubflowFilters
-}: any) {
+  handleSubflowFilterChange
+}: FilterPanelProps) {
   // refs for input fields
   const nameBoxRef = useRef<HTMLDivElement>(null);
   const teamleadBoxRef = useRef<HTMLDivElement>(null);
@@ -48,10 +49,6 @@ export function FilterPanel({
       setTeamleadDropdownPos({ top: rect.bottom, left: rect.left, width: rect.width });
     }
   }, [showTeamleadDropdown]);
-
-  const handleSubflowFilterChange = (subflow: string, value: string) => {
-    setSubflowFilters((prev: any) => ({ ...prev, [subflow]: value }));
-  };
 
   return (
     <Paper elevation={3} sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e0e0e0', position: 'relative', overflow: 'visible' }}>
