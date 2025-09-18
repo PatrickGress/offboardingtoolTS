@@ -126,14 +126,14 @@ export function OverviewContainer() {
 
   // Remove filter UI from main render
   return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f0f2f5', minHeight: '100vh', p: 0 }}>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0 }}>
       {/* Headline row */}
-      <Box sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, border: '1px solid #e0e0e0', mb: 2 }}>
-        <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
+      <Box sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, border: 'none', mb: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pl: 0 }}>
             Offboarding Overview
           </Typography>
-          <Typography variant="subtitle1" sx={{ color: '#888', fontWeight: 400 }}>
+          <Typography variant="subtitle1" sx={{ color: '#888', fontWeight: 400, pl: 0 }}>
             Manage and track all ongoing offboarding processes
           </Typography>
         </Box>
