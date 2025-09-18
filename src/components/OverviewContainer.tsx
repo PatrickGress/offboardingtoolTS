@@ -106,6 +106,20 @@ export function OverviewContainer() {
     return 'green';
   }
 
+  // Extract all unique subflow names from mockWorkflows
+  const subflowNames = useMemo(() => {
+    const all = mockWorkflows.flatMap(wf => wf.statuses.map(s => s.label));
+    return Array.from(new Set(all));
+  }, [mockWorkflows]);
+
+  // State for each subflow filter
+  const [subflowFilters, setSubflowFilters] = useState<{ [key: string]: string }>({});
+
+  // Handler for subflow filter change
+  const handleSubflowFilterChange = (subflow: string, value: string) => {
+    setSubflowFilters(prev => ({ ...prev, [subflow]: value }));
+  };
+
   // Filtering logic
   const filteredWorkflows = mockWorkflows.filter(wf => {
     const searchLower = debouncedSearch.toLowerCase();
@@ -123,6 +137,19 @@ export function OverviewContainer() {
       const dateColor = getDateTrafficLight(wf.exitDate);
       const anyStatusMatch = wf.statuses.some(s => getSubflowTrafficLight(s.completion) === crit);
       if (!(dateColor === crit || anyStatusMatch)) return false;
+    }
+    // Subflow filters
+    for (const subflow of subflowNames) {
+      const filterValue = subflowFilters[subflow];
+      if (!filterValue) continue;
+      const status = wf.statuses.find(s => s.label === subflow);
+      if (!status) return false;
+      const [done, total] = status.completion.split('/').map(Number);
+      let match = false;
+      if (filterValue === 'done') match = done === total && total > 0;
+      else if (filterValue === 'ongoing') match = done > 0 && done < total;
+      else if (filterValue === 'notstarted') match = done === 0;
+      if (!match) return false;
     }
     return true;
   });
@@ -172,11 +199,15 @@ export function OverviewContainer() {
                 setLocation('');
                 setCrit('');
                 setTeamleadSearch('');
+                setSubflowFilters({});
               },
               nameResults, teamleadResults,
               showNameDropdown, setShowNameDropdown,
               showTeamleadDropdown, setShowTeamleadDropdown,
-              nameDropdownClosedByClick, teamleadDropdownClosedByClick
+              nameDropdownClosedByClick, teamleadDropdownClosedByClick,
+              subflowNames,
+              subflowFilters,
+              handleSubflowFilterChange
             }}
             activeFilterCount={activeFilterCount}
           />
