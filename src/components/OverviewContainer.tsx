@@ -1,4 +1,7 @@
 import { Box, Typography, Button, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { WorkflowOverview } from './WorkflowOverview';
 import { FilterPanel } from './FilterPanel';
 import { useState, useEffect, useMemo, useRef } from 'react';
@@ -137,10 +140,12 @@ export function OverviewContainer() {
             Manage and track all ongoing offboarding processes
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="outlined">Placeholder 1</Button>
-          <Button variant="outlined">Placeholder 2</Button>
-          <Button variant="contained" color="primary">Create/Start new Offboarding</Button>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button variant="outlined" startIcon={<FileDownloadOutlinedIcon />}>Export Report</Button>
+            <Button variant="outlined" startIcon={<ListAltOutlinedIcon />}>View Audit Logs</Button>
+          </Box>
+          <Button variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />} sx={{ mt: 1 }}>Start New Process</Button>
         </Box>
       </Box>
       {/* Overview table below */}
