@@ -48,10 +48,10 @@ export function ChecklistOverview() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mr: 6 }}>
       <Box sx={{ width: '1100px', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, mb: 2, ml: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pl: 0 }}>
           Checklist Overview
         </Typography>
-        <Button variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />} onClick={handleAddArea}>
+        <Button variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />} sx={{ fontWeight: 700 }} onClick={handleAddArea}>
           Create New Area
         </Button>
       </Box>
@@ -59,7 +59,7 @@ export function ChecklistOverview() {
         {areas.map(area => (
           <Card key={area.name} sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant="h6" sx={{ fontWeight: 600 }}>{area.name}</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1rem' }}>{area.name}</Typography>
               <IconButton onClick={() => handleExpand(area.name)}>
                 {expanded[area.name] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </IconButton>
@@ -68,7 +68,7 @@ export function ChecklistOverview() {
               <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                 {(subflowMock[area.name] || []).map(subflow => (
                   <Card key={subflow} sx={{ minWidth: 180, p: 2, bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography variant="body1" sx={{ fontWeight: 500 }}>{subflow}</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: '0.95rem' }}>{subflow}</Typography>
                   </Card>
                 ))}
                 <Card sx={{ minWidth: 180, p: 2, bgcolor: '#e3f2fd', borderRadius: 2, boxShadow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
@@ -81,10 +81,10 @@ export function ChecklistOverview() {
       </Box>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: '#fff', p: 4, borderRadius: 2, boxShadow: 4, minWidth: 340 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>Create New Area</Typography>
+          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 700, fontSize: '1.15rem' }}>Create New Area</Typography>
           <TextField label="Area Name" fullWidth sx={{ mb: 2 }} value={newAreaName} onChange={e => setNewAreaName(e.target.value)} />
           <TextField label="Shortname (max 7 chars)" fullWidth sx={{ mb: 2 }} value={newAreaShort} onChange={e => setNewAreaShort(e.target.value)} inputProps={{ maxLength: 7 }} />
-          <Button variant="contained" color="primary" onClick={handleModalSubmit} disabled={!newAreaName || !newAreaShort || newAreaShort.length > 7}>
+          <Button variant="contained" color="primary" sx={{ fontWeight: 700 }} onClick={handleModalSubmit} disabled={!newAreaName || !newAreaShort || newAreaShort.length > 7}>
             Add Area
           </Button>
         </Box>
