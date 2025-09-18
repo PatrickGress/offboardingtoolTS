@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { DebugNav } from './components/DebugNav';
@@ -9,21 +8,15 @@ import { ChecklistDetail } from './components/ChecklistDetail';
 
 import './App.css';
 
-const pages = [
-  { name: 'Overview' },
-  { name: 'Checklist Overview' },
-];
-
 function App() {
-  const [activePage, setActivePage] = useState('Overview');
-
   return (
     <Router>
       <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100' }}>
-        <DebugNav pages={pages.map(p => ({ name: p.name, onClick: () => setActivePage(p.name) }))} />
+        <DebugNav />
         <Box sx={{ flex: 1, p: 0 }}>
           <Routes>
-            <Route path="/" element={activePage === 'Overview' ? <OverviewContainer /> : <ChecklistOverview />} />
+            <Route path="/" element={<OverviewContainer />} />
+            <Route path="/checklist-overview" element={<ChecklistOverview />} />
             <Route path="/checklist-detail/:cardId" element={<ChecklistDetail />} />
           </Routes>
         </Box>

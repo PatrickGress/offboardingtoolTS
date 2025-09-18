@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import { initialAreas } from '../mockAreas';
 import type { Area } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
-import { subflowSteps } from '../mockSubflowSteps';
 import { useNavigate } from 'react-router-dom';
 
 export function ChecklistOverview() {
