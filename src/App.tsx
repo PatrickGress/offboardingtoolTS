@@ -1,9 +1,11 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { DebugNav } from './components/DebugNav';
 import { OverviewContainer } from './components/OverviewContainer';
 import { ChecklistOverview } from './components/ChecklistOverview';
+import { ChecklistDetail } from './components/ChecklistDetail';
 
 import './App.css';
 
@@ -16,13 +18,17 @@ function App() {
   const [activePage, setActivePage] = useState('Overview');
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100' }}>
-      <DebugNav pages={pages.map(p => ({ name: p.name, onClick: () => setActivePage(p.name) }))} />
-      <Box sx={{ flex: 1, p: 0 }}>
-        {activePage === 'Overview' && <OverviewContainer />}
-        {activePage === 'Checklist Overview' && <ChecklistOverview />}
+    <Router>
+      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'grey.100' }}>
+        <DebugNav pages={pages.map(p => ({ name: p.name, onClick: () => setActivePage(p.name) }))} />
+        <Box sx={{ flex: 1, p: 0 }}>
+          <Routes>
+            <Route path="/" element={activePage === 'Overview' ? <OverviewContainer /> : <ChecklistOverview />} />
+            <Route path="/checklist-detail/:cardId" element={<ChecklistDetail />} />
+          </Routes>
+        </Box>
       </Box>
-    </Box>
+    </Router>
   );
 }
 

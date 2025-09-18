@@ -7,6 +7,7 @@ import { initialAreas } from '../mockAreas';
 import type { Area } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
 import { subflowSteps } from '../mockSubflowSteps';
+import { useNavigate } from 'react-router-dom';
 
 export function ChecklistOverview() {
   const [areas, setAreas] = useState<Area[]>(() => {
@@ -18,6 +19,7 @@ export function ChecklistOverview() {
   const [modalOpen, setModalOpen] = useState(false);
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaShort, setNewAreaShort] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem('areas', JSON.stringify(areas));
@@ -71,7 +73,7 @@ export function ChecklistOverview() {
               <Collapse in={isExpanded}>
                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, mt: 2 }}>
                   {cards.map(card => (
-                    <Card key={card.id} sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', p: 2, overflow: 'hidden' }}>
+                    <Card key={card.id} sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', p: 2, overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate(`/checklist-detail/${card.id}`)}>
                       <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '1.08rem', mb: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
                         {card.name}
                       </Typography>
