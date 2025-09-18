@@ -1,5 +1,6 @@
 import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Button, Paper } from '@mui/material';
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 
 export function FilterPanel({
   search,
@@ -25,9 +26,29 @@ export function FilterPanel({
   nameDropdownClosedByClick,
   teamleadDropdownClosedByClick
 }: any) {
+  // refs for input fields
+  const nameBoxRef = useRef<HTMLDivElement>(null);
+  const teamleadBoxRef = useRef<HTMLDivElement>(null);
+  // state for dropdown position
+  const [nameDropdownPos, setNameDropdownPos] = useState({ top: 0, left: 0, width: 220 });
+  const [teamleadDropdownPos, setTeamleadDropdownPos] = useState({ top: 0, left: 0, width: 220 });
+
+  useEffect(() => {
+    if (showNameDropdown && nameBoxRef.current) {
+      const rect = nameBoxRef.current.getBoundingClientRect();
+      setNameDropdownPos({ top: rect.bottom, left: rect.left, width: rect.width });
+    }
+  }, [showNameDropdown]);
+  useEffect(() => {
+    if (showTeamleadDropdown && teamleadBoxRef.current) {
+      const rect = teamleadBoxRef.current.getBoundingClientRect();
+      setTeamleadDropdownPos({ top: rect.bottom, left: rect.left, width: rect.width });
+    }
+  }, [showTeamleadDropdown]);
+
   return (
-    <Paper elevation={3} sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e0e0e0', position: 'relative' }}>
-      <Box sx={{ position: 'relative', minWidth: 220 }}>
+    <Paper elevation={3} sx={{ width: { xs: '1100px', lg: '1320px' }, display: 'flex', alignItems: 'center', gap: 2, px: 4, py: 2, bgcolor: '#fff', borderRadius: 2, border: '1px solid #e0e0e0', position: 'relative', overflow: 'visible' }}>
+      <Box ref={nameBoxRef} sx={{ position: 'relative', minWidth: 220 }}>
         <TextField
           label="Search by name, email, or ID"
           variant="outlined"
@@ -38,8 +59,8 @@ export function FilterPanel({
           onFocus={() => setShowNameDropdown(nameResults.length > 0)}
           onBlur={() => setTimeout(() => setShowNameDropdown(false), 150)}
         />
-        {showNameDropdown && nameResults.length > 0 && (
-          <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
+        {showNameDropdown && nameResults.length > 0 && ReactDOM.createPortal(
+          <Box sx={{ position: 'fixed', top: nameDropdownPos.top, left: nameDropdownPos.left, zIndex: 1300, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: nameDropdownPos.width, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
             {nameResults.map((n: string, i: number) => (
               <Box key={n + i}>
                 <MenuItem
@@ -58,8 +79,8 @@ export function FilterPanel({
                 {i < nameResults.length - 1 && <Box sx={{ height: 1, bgcolor: '#eee', mx: 2 }} />}
               </Box>
             ))}
-          </Box>
-        )}
+          </Box>, document.body)
+        }
       </Box>
       <FormControl size="small" sx={{ minWidth: 140 }}>
         <InputLabel>Department</InputLabel>
@@ -70,7 +91,7 @@ export function FilterPanel({
           ))}
         </Select>
       </FormControl>
-      <Box sx={{ position: 'relative', minWidth: 220 }}>
+      <Box ref={teamleadBoxRef} sx={{ position: 'relative', minWidth: 220 }}>
         <TextField
           label="Search Teamlead"
           variant="outlined"
@@ -81,8 +102,8 @@ export function FilterPanel({
           onFocus={() => setShowTeamleadDropdown(teamleadResults.length > 0)}
           onBlur={() => setTimeout(() => setShowTeamleadDropdown(false), 150)}
         />
-        {showTeamleadDropdown && teamleadResults.length > 0 && (
-          <Box sx={{ position: 'absolute', top: 40, left: 0, zIndex: 10, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: 220, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
+        {showTeamleadDropdown && teamleadResults.length > 0 && ReactDOM.createPortal(
+          <Box sx={{ position: 'fixed', top: teamleadDropdownPos.top, left: teamleadDropdownPos.left, zIndex: 1300, bgcolor: '#fff', boxShadow: 3, borderRadius: 1, minWidth: teamleadDropdownPos.width, maxHeight: 220, overflowY: 'auto', border: '1px solid #e0e0e0', transition: 'box-shadow 0.2s', p: 0 }}>
             {teamleadResults.map((tl: string, i: number) => (
               <Box key={tl + i}>
                 <MenuItem
@@ -101,8 +122,8 @@ export function FilterPanel({
                 {i < teamleadResults.length - 1 && <Box sx={{ height: 1, bgcolor: '#eee', mx: 2 }} />}
               </Box>
             ))}
-          </Box>
-        )}
+          </Box>, document.body)
+        }
       </Box>
       <FormControl size="small" sx={{ minWidth: 140 }}>
         <InputLabel>Location</InputLabel>
