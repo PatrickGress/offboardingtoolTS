@@ -59,7 +59,7 @@ export function ChecklistOverview() {
       </Box>
       <Box sx={{ width: '1100px', ml: 8 }}>
         {areas.map(area => {
-          const cards = subflowCards.filter(card => card.areaIds.includes(area.id));
+          const cards = subflowCards.filter(card => card.areaId === area.id);
           const isExpanded = expandedAreas.includes(area.id);
           return (
             <Card key={area.id} sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1 }}>

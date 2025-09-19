@@ -6,6 +6,7 @@ import { WorkflowCard } from './WorkflowCard';
 import { FilterPanel } from './FilterPanel';
 import type { WorkflowOverviewProps } from './OverviewContainer';
 import { mockWorkflows } from '../mockCards';
+import { initialAreas } from '../mockAreas';
 
 const sortOptions = [
   { value: 'exitDate', label: 'Exit Date (soonest)' },
@@ -110,10 +111,9 @@ export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setF
               <th style={{ width: '14%', minWidth: 120, maxWidth: 420, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Department</th>
               <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Location</th>
               <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Exit Date</th>
-              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>HR</th>
-              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>IT</th>
-              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>Finance</th>
-              <th style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>Team</th>
+              {initialAreas.map(area => (
+                <th key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>{area.shortname}</th>
+              ))}
             </tr>
           </thead>
           <tbody>

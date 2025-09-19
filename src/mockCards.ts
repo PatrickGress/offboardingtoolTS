@@ -1,8 +1,7 @@
 import type { WorkflowData } from './components/WorkflowCard';
 
 export type StatusData = {
-  label: string;
-  completion: string;
+  completion: string[]; // array of checked step ids
   subflowId: string;
 };
 
@@ -15,13 +14,13 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     department: 'IT',
     location: 'Berlin',
     teamlead: 'Lisa Schmidt',
-    exitDate: '2025-09-25', // <14 days from now
+    exitDate: '2025-09-25',
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
-      { label: 'HR', completion: '0/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { label: 'IT', completion: '0/3', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '0/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '0/4', subflowId: 'team-subflow' },
+      { completion: [], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01','b3d2e7c1-2a4b-5c6d-7e8f-2b3c4d5e6f02'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01','b3d2e7c1-2a4b-5c6d-7e8f-2b3c4d5e6f02','c4e3f8d2-3b5c-6d7e-8f9a-3c4d5e6f7g03'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -33,13 +32,13 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     department: 'HR',
     location: 'Munich',
     teamlead: 'John Miller',
-    exitDate: '2025-10-20', // 14-30 days from now
+    exitDate: '2025-10-20',
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' }, // 50%
-      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' }, // ~67%
-      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' }, // 50%
-      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' }, // 75%
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: ['h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: ['f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: ['j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -51,13 +50,13 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     department: 'Finance',
     location: 'Berlin',
     teamlead: 'Emily Clark',
-    exitDate: '2025-10-25', // 14-30 days from now
+    exitDate: '2025-10-25',
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: ['h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: ['f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: ['j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -69,13 +68,13 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     department: 'IT',
     location: 'Hamburg',
     teamlead: 'Lisa Schmidt',
-    exitDate: '2025-09-28', // <14 days from now
+    exitDate: '2025-09-28',
     picture: 'https://mui.com/static/images/avatar/4.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
+      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: ['h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: ['f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: ['j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -90,10 +89,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-10',
     picture: 'https://mui.com/static/images/avatar/5.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '2/4', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '1/2', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: [], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: ['k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z'], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -108,10 +107,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-15',
     picture: 'https://mui.com/static/images/avatar/6.jpg',
     statuses: [
-      { label: 'HR', completion: '0/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '1/3', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '2/2', subflowId: 'team-subflow' },
+      { completion: [], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: ['g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d'], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: ['k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z'], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -126,10 +125,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-20',
     picture: 'https://mui.com/static/images/avatar/7.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '2/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '0/1', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: ['g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d'], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: [], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -144,10 +143,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-25',
     picture: 'https://mui.com/static/images/avatar/8.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '0/2', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '1/3', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: [], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: ['g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d'], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: ['k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z'], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -162,10 +161,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-30',
     picture: 'https://mui.com/static/images/avatar/9.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '2/2', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: [], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: ['k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z'], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -180,10 +179,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-11-05',
     picture: 'https://mui.com/static/images/avatar/10.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '1/3', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '0/2', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: ['g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d'], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: [], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },
@@ -198,10 +197,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-11-10',
     picture: 'https://mui.com/static/images/avatar/11.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
-      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
-      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
-      { label: 'Team', completion: '1/2', subflowId: 'team-subflow' },
+      { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
+      { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
+      { completion: [], subflowId: 'g2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d' },
+      { completion: ['k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z'], subflowId: 'k4l5m6n7-8o9p-0q1r-2s3t-4u5v6w7x8y9z' },
     ],
     subflows: [],
   },

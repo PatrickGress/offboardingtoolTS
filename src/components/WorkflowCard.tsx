@@ -1,9 +1,11 @@
 import { Card } from '@mui/material';
 import styles from './WorkflowCard.module.css';
+import { initialAreas } from '../mockAreas';
+import { subflowCards } from '../mockSubflowCards';
 
-export type SubflowStatus = {
-  label: string;
-  completion: string;
+export type StatusData = {
+  completion: string[]; // checked step ids
+  subflowId: string;
 };
 
 export type WorkflowData = {
@@ -15,22 +17,22 @@ export type WorkflowData = {
   teamlead: string;
   exitDate: string;
   picture: string;
-  statuses: SubflowStatus[];
+  statuses: StatusData[];
   subflows: any;
 };
 
 // Helper to determine traffic light color for subflows
-function getSubflowTrafficLight(completion: string): string {
-  const [done, total] = completion.split('/').map(Number);
-  if (total === 0) return 'red'; // avoid division by zero
-  const percent = done / total;
+function getSubflowTrafficLight(completion: string[], total: number): string {
+  if (total === 0) return 'red';
+  const percent = completion.length / total;
   if (percent < 0.5) return 'red';
   if (percent < 1) return 'yellow';
   return 'green';
 }
 
 export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
-  const subflowLabels = ['HR', 'IT', 'Finance', 'Team'];
+  // Dynamic area columns
+  const areaColumns = initialAreas;
   if (isTableRow) {
     return (
       <tr style={{ borderBottom: isLast ? 'none' : '1px solid #e0e0e0', background: '#fff', height: 64 }}>
@@ -64,15 +66,28 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
             );
           })()}
         </td>
-        {subflowLabels.map((label, idx) => {
-          const sf = data.statuses[idx] || { completion: '0/0' };
+        {areaColumns.map(area => {
+          // Find status for this area
+          const status = data.statuses.find(s => {
+            const subflow = subflowCards.find(card => card.id === s.subflowId);
+            return subflow && subflow.areaId === area.id;
+          });
+          if (!status) {
+            return (
+              <td key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
+                <span style={{ color: '#888' }}>–</span>
+              </td>
+            );
+          }
+          const subflow = subflowCards.find(card => card.id === status.subflowId);
+          const totalSteps = subflow ? subflow.checkpointIds.length : 0;
+          const color = getSubflowTrafficLight(status.completion, totalSteps);
           let bg = '#e53935';
-          const color = getSubflowTrafficLight(sf.completion);
           if (color === 'yellow') bg = '#fbc02d';
           if (color === 'green') bg = '#43a047';
           return (
-            <td key={label} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{sf.completion}</span>
+            <td key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{`${status.completion.length}/${totalSteps}`}</span>
             </td>
           );
         })}
@@ -106,11 +121,24 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
         })()}
       </span>
       <div className={styles.statuses}>
-        {subflowLabels.map((label, idx) => {
-          const sf = data.statuses[idx] || { completion: '0/0' };
+        {areaColumns.map(area => {
+          const status = data.statuses.find(s => {
+            const subflow = subflowCards.find(card => card.id === s.subflowId);
+            return subflow && subflow.areaId === area.id;
+          });
+          if (!status) {
+            return (
+              <div key={area.id} className={styles.status}>
+                <span style={{ color: '#888' }}>–</span>
+              </div>
+            );
+          }
+          const subflow = subflowCards.find(card => card.id === status.subflowId);
+          const totalSteps = subflow ? subflow.checkpointIds.length : 0;
+          const color = getSubflowTrafficLight(status.completion, totalSteps);
           return (
-            <div key={label} className={styles.status}>
-              <span className={`${styles.trafficlight} ${styles[getSubflowTrafficLight(sf.completion)]}`}>{sf.completion}</span>
+            <div key={area.id} className={styles.status}>
+              <span className={`${styles.trafficlight} ${styles[color]}`}>{`${status.completion.length}/${totalSteps}`}</span>
             </div>
           );
         })}

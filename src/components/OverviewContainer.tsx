@@ -5,6 +5,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { WorkflowOverview } from './WorkflowOverview';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { mockWorkflows } from '../mockCards';
+import { initialAreas } from '../mockAreas';
+import { subflowCards } from '../mockSubflowCards';
 
 // Helper functions
 const getUnique = (arr: any[], key: string) => Array.from(new Set(arr.map(item => item[key]).filter(Boolean)));
@@ -16,10 +18,9 @@ function getDateTrafficLight(exitDate: string): string {
   if (diffDays < 30) return 'yellow';
   return 'green';
 }
-function getSubflowTrafficLight(completion: string): string {
-  const [done, total] = completion.split('/').map(Number);
+function getSubflowTrafficLight(completion: string[], total: number): string {
   if (total === 0) return 'red';
-  const percent = done / total;
+  const percent = completion.length / total;
   if (percent < 0.5) return 'red';
   if (percent < 1) return 'yellow';
   return 'green';
@@ -88,14 +89,16 @@ export function OverviewContainer() {
   const locations = useMemo(() => getUnique(mockWorkflows, 'location'), []);
   const criticality = useMemo(() => {
     const dateColors = mockWorkflows.map(wf => getDateTrafficLight(wf.exitDate));
-    const subflowColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => getSubflowTrafficLight(s.completion)));
+    const subflowColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => {
+      const subflowCard = subflowCards.find((card: { id: string }) => card.id === s.subflowId);
+      const total = subflowCard ? subflowCard.checkpointIds.length : 0;
+      return getSubflowTrafficLight(s.completion, total);
+    }));
     const allColors = [...dateColors, ...subflowColors];
     return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
   }, []);
-  const subflowNames = useMemo(() => {
-    const all = mockWorkflows.flatMap(wf => wf.statuses.map(s => s.label));
-    return Array.from(new Set(all));
-  }, []);
+  const areaShortnames = initialAreas.map((a: { shortname: string }) => a.shortname);
+  const subflowNames = areaShortnames;
 
   // Debounced search
   useEffect(() => {
@@ -151,15 +154,27 @@ export function OverviewContainer() {
     if (location && wf.location !== location) return false;
     if (crit) {
       const dateColor = getDateTrafficLight(wf.exitDate);
-      const anyStatusMatch = wf.statuses.some(s => getSubflowTrafficLight(s.completion) === crit);
+      const anyStatusMatch = wf.statuses.some(s => {
+        const subflowCard = subflowCards.find((card: { id: string }) => card.id === s.subflowId);
+        const total = subflowCard ? subflowCard.checkpointIds.length : 0;
+        return getSubflowTrafficLight(s.completion, total) === crit;
+      });
       if (!(dateColor === crit || anyStatusMatch)) return false;
     }
     for (const subflow of subflowNames) {
       const filterValue = subflowFilters[subflow];
       if (!filterValue) continue;
-      const status = wf.statuses.find(s => s.label === subflow);
+      // Find status for this area
+      const area = initialAreas.find((a: { shortname: string }) => a.shortname === subflow);
+      if (!area) continue;
+      const status = wf.statuses.find((s: { subflowId: string }) => {
+        const subflowCard = subflowCards.find((card: { id: string; areaId: string }) => card.id === s.subflowId);
+        return subflowCard && subflowCard.areaId === area.id;
+      });
       if (!status) return false;
-      const [done, total] = status.completion.split('/').map(Number);
+      const subflowCard = subflowCards.find((card: { id: string }) => card.id === status.subflowId);
+      const total = subflowCard ? subflowCard.checkpointIds.length : 0;
+      const done = status.completion.length;
       let match = false;
       if (filterValue === 'done') match = done === total && total > 0;
       else if (filterValue === 'ongoing') match = done > 0 && done < total;
