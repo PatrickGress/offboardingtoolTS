@@ -39,8 +39,16 @@ export function ChecklistDetail() {
         ) : (
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, pl: 2, mb: 2 }}>
             {checkpoints.map(cp => (
-              <Box key={cp.id} sx={{ bgcolor: '#fff', borderRadius: 2, boxShadow: 1, border: '1px solid #e0e0e0', p: 2, minHeight: 48, display: 'flex', alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ color: '#333', fontSize: '1.02rem', textAlign: 'left', wordBreak: 'break-word', whiteSpace: 'normal' }}>{cp.text}</Typography>
+              <Box key={cp.id} sx={{ bgcolor: '#fff', borderRadius: 2, boxShadow: 1, border: '1px solid #e0e0e0', p: 2, minHeight: 48, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <Typography variant="subtitle2" sx={{ color: '#1976d2', fontWeight: 600, mb: 0.5 }}>
+                  {cp.headline}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#333', fontSize: '1.02rem', textAlign: 'left', wordBreak: 'break-word', whiteSpace: 'normal', mb: 0.5 }}>
+                  {cp.description}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#888' }}>
+                  {cp.class}
+                </Typography>
               </Box>
             ))}
           </Box>
