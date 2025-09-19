@@ -9,11 +9,12 @@ export type SubflowCard = {
   name: string;
   useCase: string;
   checkpointIds: string[];
+  newVersionId?: string;
 };
 
 export const subflowCards: SubflowCard[] = [
   {
-    id: 'hr-voluntary',
+    id: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01', // Voluntary Resignation
     areaIds: ['b7e2c7e2-1a2b-4c3d-8e9f-1a2b3c4d5e6f'],
     name: 'Voluntary Resignation – Standard HR Process',
     useCase: 'Employee resigns voluntarily, HR manages the administrative and cultural exit.',
@@ -28,9 +29,10 @@ export const subflowCards: SubflowCard[] = [
       'h9j8k3i7-8a0b-1c2d-3e4f-8h9i0j1k2l08',
       'i0k9l4j8-9b1c-2d3e-4f5g-9i0j1k2l3m09',
     ],
+    newVersionId: '',
   },
   {
-    id: 'hr-termination',
+    id: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10', // Employer-Initiated Termination
     areaIds: ['b7e2c7e2-1a2b-4c3d-8e9f-1a2b3c4d5e6f'],
     name: 'Employer-Initiated Termination – Sensitive HR Process',
     useCase: 'Employer-initiated separation (e.g., restructuring, redundancy). HR ensures legal compliance and protects employer reputation.',
@@ -45,5 +47,6 @@ export const subflowCards: SubflowCard[] = [
       'q8s7t2r6-7j9k-0l1m-2n3o-7q8r9s0t1u17',
       'r9t8u3s7-8k0l-1m2n-3o4p-8r9s0t1u2v18',
     ],
+    newVersionId: '',
   },
 ];

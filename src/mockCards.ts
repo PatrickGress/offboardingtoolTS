@@ -18,7 +18,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-09-25', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
-      { label: 'HR', completion: '0/2', subflowId: 'hr-voluntary' },
+      { label: 'HR', completion: '0/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
       { label: 'IT', completion: '0/3', subflowId: 'it-subflow' },
       { label: 'Finance', completion: '0/2', subflowId: 'finance-subflow' },
       { label: 'Team', completion: '0/4', subflowId: 'team-subflow' },
@@ -36,7 +36,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-20', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' }, // 50%
+      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' }, // 50%
       { label: 'IT', completion: '2/3', subflowId: 'it-subflow' }, // ~67%
       { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' }, // 50%
       { label: 'Team', completion: '3/4', subflowId: 'team-subflow' }, // 75%
@@ -54,7 +54,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-25', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
       { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
       { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
       { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
@@ -72,7 +72,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-09-28', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/4.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'HR', completion: '1/2', subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
       { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
       { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
       { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
