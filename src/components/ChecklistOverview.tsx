@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { initialAreas } from '../mockAreas';
 import type { Area } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export function ChecklistOverview() {
   const [areas, setAreas] = useState<Area[]>(() => {
@@ -19,6 +19,7 @@ export function ChecklistOverview() {
   const [newAreaName, setNewAreaName] = useState('');
   const [newAreaShort, setNewAreaShort] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     localStorage.setItem('areas', JSON.stringify(areas));
@@ -46,6 +47,8 @@ export function ChecklistOverview() {
       setModalOpen(false);
     }
   };
+
+  // Access payload: location.state?.processId, location.state?.completion, location.state?.subflowId
 
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mr: 6 }}>

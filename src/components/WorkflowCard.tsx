@@ -2,6 +2,7 @@ import { Card } from '@mui/material';
 import styles from './WorkflowCard.module.css';
 import { initialAreas } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
+import { useNavigate } from 'react-router-dom';
 
 export type StatusData = {
   completion: string[]; // checked step ids
@@ -31,8 +32,9 @@ function getSubflowTrafficLight(completion: string[], total: number): string {
 }
 
 export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
-  // Dynamic area columns
   const areaColumns = initialAreas;
+  const navigate = useNavigate();
+  // Dynamic area columns
   if (isTableRow) {
     return (
       <tr style={{ borderBottom: isLast ? 'none' : '1px solid #e0e0e0', background: '#fff', height: 64 }}>
@@ -67,7 +69,6 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
           })()}
         </td>
         {areaColumns.map(area => {
-          // Find status for this area
           const status = data.statuses.find(s => {
             const subflow = subflowCards.find(card => card.id === s.subflowId);
             return subflow && subflow.areaId === area.id;
@@ -86,7 +87,9 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
           if (color === 'yellow') bg = '#fbc02d';
           if (color === 'green') bg = '#43a047';
           return (
-            <td key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center' }}>
+            <td key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center', cursor: 'pointer' }}
+              onClick={() => navigate(`/checklist-detail/${status.subflowId}`, { state: { processId: data.id, completion: status.completion, subflowId: status.subflowId } })}
+            >
               <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{`${status.completion.length}/${totalSteps}`}</span>
             </td>
           );

@@ -20,6 +20,11 @@ export function DebugNav() {
             <ListItemText primary="Checklist detail (Voluntary)" />
           </ListItemButton>
         </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/checklist-detail/j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10" state={{ processId: 'e6f7a8b3-5d7e-8f9a-0a1b-5c6d7e8f9a05', completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' }}>
+            <ListItemText primary="Shortcut: Subflow Detail (Demo)" />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
