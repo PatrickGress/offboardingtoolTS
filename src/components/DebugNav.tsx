@@ -16,7 +16,7 @@ export function DebugNav() {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/checklist-detail/hr-voluntary">
+          <ListItemButton component={Link} to="/checklist-detail/e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01">
             <ListItemText primary="Checklist detail (Voluntary)" />
           </ListItemButton>
         </ListItem>
