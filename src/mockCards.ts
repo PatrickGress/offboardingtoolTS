@@ -1,3 +1,4 @@
+import { subflowCards } from './mockSubflowCards';
 import type { WorkflowData } from './components/WorkflowCard';
 
 export type StatusData = {
@@ -17,10 +18,9 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-09-25',
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
-      { completion: [], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01','b3d2e7c1-2a4b-5c6d-7e8f-2b3c4d5e6f02'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
-      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01','b3d2e7c1-2a4b-5c6d-7e8f-2b3c4d5e6f02','c4e3f8d2-3b5c-6d7e-8f9a-3c4d5e6f7g03'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
-      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
+      { completion: [], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: [], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: [], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -35,10 +35,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-20',
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
-      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { completion: ['h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
-      { completion: ['f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
-      { completion: ['j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
+      { completion: subflowCards.find(c => c.id === 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01')?.checkpointIds ?? [], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: subflowCards.find(c => c.id === 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e')?.checkpointIds ?? [], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: subflowCards.find(c => c.id === 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c')?.checkpointIds ?? [], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: subflowCards.find(c => c.id === 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y')?.checkpointIds ?? [], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },
@@ -53,10 +53,10 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     exitDate: '2025-10-25',
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { completion: ['e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01'], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
-      { completion: ['h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e'], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
-      { completion: ['f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c'], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
-      { completion: ['j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y'], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
+      { completion: subflowCards.find(c => c.id === 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01')?.checkpointIds ?? [], subflowId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01' },
+      { completion: subflowCards.find(c => c.id === 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e')?.checkpointIds ?? [], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: subflowCards.find(c => c.id === 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c')?.checkpointIds ?? [], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
+      { completion: subflowCards.find(c => c.id === 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y')?.checkpointIds ?? [], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],
     subflows: [],
   },

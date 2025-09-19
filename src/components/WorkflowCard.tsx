@@ -24,8 +24,8 @@ export type WorkflowData = {
 // Helper to determine traffic light color for subflows
 function getSubflowTrafficLight(completion: string[], total: number): string {
   if (total === 0) return 'red';
+  if (completion.length === 0) return 'red';
   const percent = completion.length / total;
-  if (percent < 0.5) return 'red';
   if (percent < 1) return 'yellow';
   return 'green';
 }
