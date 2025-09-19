@@ -81,37 +81,45 @@ export function ChecklistDetail() {
         <Typography variant="body2" sx={{ color: '#888', textAlign: 'left' }}>No checkpoints found.</Typography>
       ) : (
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: 3, pl: 0, mb: 2 }}>
-          {checkpoints.map(cp => (
-            <Box key={cp.id} sx={{ position: 'relative', bgcolor: '#fff', borderRadius: 2, boxShadow: 2, border: '1px solid #e0e0e0', p: 4, minHeight: 120, maxWidth: 900, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
-              <WaveOverlay className={waveMap[cp.id] ? 'active' : ''} />
-              <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 3 }}>
-                <Checkbox
-                  checked={!!checkedMap[cp.id]}
-                  onChange={() => handleToggle(cp.id)}
-                  icon={<span style={{
-                    display: 'block',
-                    width: 28,
-                    height: 28,
-                    borderRadius: '50%',
-                    border: '2px solid #bdbdbd',
-                    background: '#fff',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
-                  }} />}
-                  checkedIcon={<CheckIcon />}
-                  sx={{ p: 0 }}
-                />
+          {checkpoints.map(cp => {
+            // Find progression info for this step (if any)
+            const workflow = (window as any).mockWorkflows?.find((w: any) => w.processId && w.progressions?.some((p: any) => p.subflowId === card.id));
+            const progressionObj = workflow?.progressions?.find((p: any) => p.subflowId === card.id);
+            const showCheckbox = workflow?.processId && progressionObj?.progression;
+            return (
+              <Box key={cp.id} sx={{ position: 'relative', bgcolor: '#fff', borderRadius: 2, boxShadow: 2, border: '1px solid #e0e0e0', p: 4, minHeight: 120, maxWidth: 900, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
+                <WaveOverlay className={waveMap[cp.id] ? 'active' : ''} />
+                {showCheckbox && (
+                  <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 3 }}>
+                    <Checkbox
+                      checked={!!checkedMap[cp.id]}
+                      onChange={() => handleToggle(cp.id)}
+                      icon={<span style={{
+                        display: 'block',
+                        width: 28,
+                        height: 28,
+                        borderRadius: '50%',
+                        border: '2px solid #bdbdbd',
+                        background: '#fff',
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
+                      }} />}
+                      checkedIcon={<CheckIcon />}
+                      sx={{ p: 0 }}
+                    />
+                  </Box>
+                )}
+                <Typography variant="subtitle2" sx={{ color: '#1976d2', fontWeight: 600, mb: 0.5, pl: 5 }}>
+                  {cp.headline}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#333', fontSize: '1.08rem', textAlign: 'left', wordBreak: 'break-word', whiteSpace: 'normal', mb: 0.5, pl: 5 }}>
+                  {cp.description}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#888', pl: 5 }}>
+                  {cp.class}
+                </Typography>
               </Box>
-              <Typography variant="subtitle2" sx={{ color: '#1976d2', fontWeight: 600, mb: 0.5, pl: 5 }}>
-                {cp.headline}
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#333', fontSize: '1.08rem', textAlign: 'left', wordBreak: 'break-word', whiteSpace: 'normal', mb: 0.5, pl: 5 }}>
-                {cp.description}
-              </Typography>
-              <Typography variant="caption" sx={{ color: '#888', pl: 5 }}>
-                {cp.class}
-              </Typography>
-            </Box>
-          ))}
+            );
+          })}
         </Box>
       )}
     </Box>

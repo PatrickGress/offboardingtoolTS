@@ -1,9 +1,15 @@
 import type { WorkflowData } from './components/WorkflowCard';
 
-export const mockWorkflows: WorkflowData[] = [
-  // All red (date < 14 days, all subflows < 50%)
+export type StatusData = {
+  label: string;
+  completion: string;
+  subflowId: string;
+};
+
+export const mockWorkflows: (WorkflowData & { processId: string; statuses: StatusData[] })[] = [
   {
     id: '1',
+    processId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01',
     name: 'Hans Herman',
     email: 'hans.herman@example.com',
     department: 'IT',
@@ -12,16 +18,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-09-25', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
-      { label: 'HR', completion: '0/2' },
-      { label: 'IT', completion: '0/3' },
-      { label: 'Finance', completion: '0/2' },
-      { label: 'Team', completion: '0/4' },
+      { label: 'HR', completion: '0/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '0/3', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '0/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '0/4', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // All yellow (date 14-30 days, all subflows 50-99%)
   {
     id: '2',
+    processId: 'b3d2e7c1-2a4b-5c6d-7e8f-2b3c4d5e6f02',
     name: 'Lisa Schmidt',
     email: 'lisa.schmidt@example.com',
     department: 'HR',
@@ -30,16 +36,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-20', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/2.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' }, // 50%
-      { label: 'IT', completion: '2/3' }, // ~67%
-      { label: 'Finance', completion: '1/2' }, // 50%
-      { label: 'Team', completion: '3/4' }, // 75%
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' }, // 50%
+      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' }, // ~67%
+      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' }, // 50%
+      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' }, // 75%
     ],
     subflows: [],
   },
-  // All yellow (date 14-30 days, all subflows 50-99%)
   {
     id: '3',
+    processId: 'c4e5f6a1-3b5c-6d7e-8f9a-3b4c5d6e7f03',
     name: 'Markus Braun',
     email: 'markus.braun@example.com',
     department: 'Finance',
@@ -48,16 +54,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-25', // 14-30 days from now
     picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '2/3' },
-      { label: 'Finance', completion: '1/2' },
-      { label: 'Team', completion: '3/4' },
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // All yellow subflows, date in red
   {
     id: '4',
+    processId: 'd5f6a7b2-4c6d-7e8f-9a0b-4c5d6e7f8a04',
     name: 'Julia Meier',
     email: 'julia.meier@example.com',
     department: 'IT',
@@ -66,16 +72,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-09-28', // <14 days from now
     picture: 'https://mui.com/static/images/avatar/4.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '2/3' },
-      { label: 'Finance', completion: '1/2' },
-      { label: 'Team', completion: '3/4' },
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '3/4', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '5',
+    processId: 'e6f7a8b3-5d7e-8f9a-0a1b-5c6d7e8f9a05',
     name: 'Peter Müller',
     email: 'peter.mueller@example.com',
     department: 'HR',
@@ -84,16 +90,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-10',
     picture: 'https://mui.com/static/images/avatar/5.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2' },
-      { label: 'IT', completion: '2/4' },
-      { label: 'Finance', completion: '0/1' },
-      { label: 'Team', completion: '1/2' },
+      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/4', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '1/2', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '6',
+    processId: 'f7a8b9c4-6e8f-9a0b-1a2c-6d7e8f9a0b06',
     name: 'Anna Fischer',
     email: 'anna.fischer@example.com',
     department: 'Finance',
@@ -102,16 +108,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-15',
     picture: 'https://mui.com/static/images/avatar/6.jpg',
     statuses: [
-      { label: 'HR', completion: '0/2' },
-      { label: 'IT', completion: '2/2' },
-      { label: 'Finance', completion: '1/3' },
-      { label: 'Team', completion: '2/2' },
+      { label: 'HR', completion: '0/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '1/3', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '2/2', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '7',
+    processId: 'g8b9c0d5-7f9a-0a1b-2a3c-7e8f9a0b1a07',
     name: 'Tom Becker',
     email: 'tom.becker@example.com',
     department: 'IT',
@@ -120,16 +126,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-20',
     picture: 'https://mui.com/static/images/avatar/7.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '2/3' },
-      { label: 'Finance', completion: '2/2' },
-      { label: 'Team', completion: '0/1' },
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/3', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '2/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '0/1', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '8',
+    processId: 'h9c0d1e6-8f9a-0a1b-2a3c-7e8f9a0b2a08',
     name: 'Sophie Klein',
     email: 'sophie.klein@example.com',
     department: 'Finance',
@@ -138,16 +144,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-25',
     picture: 'https://mui.com/static/images/avatar/8.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2' },
-      { label: 'IT', completion: '0/2' },
-      { label: 'Finance', completion: '1/2' },
-      { label: 'Team', completion: '1/3' },
+      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '0/2', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '1/3', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '9',
+    processId: 'i0d1e2f7-9a0b-1a2c-3b4c-8f9a0b1a3a09',
     name: 'Max Weber',
     email: 'max.weber@example.com',
     department: 'HR',
@@ -156,16 +162,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-10-30',
     picture: 'https://mui.com/static/images/avatar/9.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '2/2' },
-      { label: 'Finance', completion: '0/1' },
-      { label: 'Team', completion: '2/2' },
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '2/2', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '10',
+    processId: 'j1e2f3a4-0b1c-2d3e-4f5a-9a0b1c2d3e10',
     name: 'Clara Wolf',
     email: 'clara.wolf@example.com',
     department: 'IT',
@@ -174,16 +180,16 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-11-05',
     picture: 'https://mui.com/static/images/avatar/10.jpg',
     statuses: [
-      { label: 'HR', completion: '2/2' },
-      { label: 'IT', completion: '1/3' },
-      { label: 'Finance', completion: '1/2' },
-      { label: 'Team', completion: '0/2' },
+      { label: 'HR', completion: '2/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '1/3', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '1/2', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '0/2', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
-  // Mixed
   {
     id: '11',
+    processId: 'k2f3a4b5-1c2d-3e4f-5a6b-0a1b2c3d4e11',
     name: 'Felix König',
     email: 'felix.koenig@example.com',
     department: 'Finance',
@@ -192,10 +198,10 @@ export const mockWorkflows: WorkflowData[] = [
     exitDate: '2025-11-10',
     picture: 'https://mui.com/static/images/avatar/11.jpg',
     statuses: [
-      { label: 'HR', completion: '1/2' },
-      { label: 'IT', completion: '2/2' },
-      { label: 'Finance', completion: '0/1' },
-      { label: 'Team', completion: '1/2' },
+      { label: 'HR', completion: '1/2', subflowId: 'hr-voluntary' },
+      { label: 'IT', completion: '2/2', subflowId: 'it-subflow' },
+      { label: 'Finance', completion: '0/1', subflowId: 'finance-subflow' },
+      { label: 'Team', completion: '1/2', subflowId: 'team-subflow' },
     ],
     subflows: [],
   },
