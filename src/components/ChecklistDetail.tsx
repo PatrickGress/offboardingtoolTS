@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
 
-const WaveOverlay = styled('div')(({ theme }) => ({
+const WaveOverlay = styled('div')(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
