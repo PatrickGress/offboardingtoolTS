@@ -62,7 +62,7 @@ export function ChecklistDetail() {
       {/* Header box: headline, description, steps header */}
       <Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700, pl: 0, textAlign: 'left' }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, pl: 0, textAlign: 'left', maxWidth: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
             {card.name}
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
