@@ -1,7 +1,7 @@
 import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, IconButton, Popover } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { WorkflowCard } from './WorkflowCard';
 import { FilterPanel } from './FilterPanel';
 import type { WorkflowOverviewProps } from './OverviewContainer';
@@ -29,9 +29,40 @@ function sortWorkflows(workflows: any[], sortBy: string) {
     }
 }
 
+function loadWorkflows() {
+    const stored = localStorage.getItem('mockWorkflows');
+    if (stored) {
+        try {
+            return JSON.parse(stored);
+        } catch {
+            return mockWorkflows;
+        }
+    }
+    return mockWorkflows;
+}
+
 export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: WorkflowOverviewProps) {
     const [sortBy, setSortBy] = useState('exitDate');
-    const sortedWorkflows = sortWorkflows(workflows ?? mockWorkflows, sortBy);
+    const [localWorkflows, setLocalWorkflows] = useState(loadWorkflows());
+
+    // Listen for localStorage changes (e.g., after step check)
+    useEffect(() => {
+        const handleStorage = () => {
+            setLocalWorkflows(loadWorkflows());
+        };
+        window.addEventListener('storage', handleStorage);
+        return () => window.removeEventListener('storage', handleStorage);
+    }, []);
+
+    // Optionally, poll for changes if needed
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setLocalWorkflows(loadWorkflows());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const sortedWorkflows = sortWorkflows(localWorkflows, sortBy);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleFilterButtonClick = (event: React.MouseEvent<HTMLElement>) => {

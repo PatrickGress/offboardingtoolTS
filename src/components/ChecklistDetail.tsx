@@ -71,28 +71,30 @@ export function ChecklistDetail() {
     }
 
     // Initial checkedMap from payload.completion (table click) or status.completion
-    let initialChecked: Record<string, boolean> = {};
+    const initialChecked: Record<string, boolean> = {};
     if (payload.completion && Array.isArray(payload.completion)) {
-        payload.completion.forEach((id: string) => { initialChecked[id] = true; });
+        (payload.completion as string[]).forEach((id: string) => { initialChecked[id] = true; });
     } else if (status && status.completion) {
-        status.completion.forEach((id: string) => { initialChecked[id] = true; });
+        (status.completion as string[]).forEach((id: string) => { initialChecked[id] = true; });
     }
     // Local state for checkboxes
-    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>(initialChecked);
+    const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({});
     const [waveMap, setWaveMap] = useState<Record<string, boolean>>({});
 
-    // Update checkedMap if payload changes (table click or status change)
+    // Update checkedMap whenever workflows, payload, or status change
     useEffect(() => {
-        if (payload.completion && Array.isArray(payload.completion)) {
-            const newChecked: Record<string, boolean> = {};
-            payload.completion.forEach((id: string) => { newChecked[id] = true; });
-            setCheckedMap(newChecked);
-        } else if (status && status.completion) {
-            const newChecked: Record<string, boolean> = {};
-            status.completion.forEach((id: string) => { newChecked[id] = true; });
-            setCheckedMap(newChecked);
+        let newChecked: Record<string, boolean> = {};
+        if (payload.processId && payload.subflowId) {
+            const wf = workflows.find((w: WorkflowData) => w.processId === payload.processId);
+            const st = wf?.statuses?.find((s: StatusData) => s.subflowId === payload.subflowId);
+            if (st && Array.isArray(st.completion)) {
+                st.completion.forEach((id: string) => { newChecked[id] = true; });
+            }
+        } else if (payload.completion && Array.isArray(payload.completion)) {
+            (payload.completion as string[]).forEach((id: string) => { newChecked[id] = true; });
         }
-    }, [payload.processId, payload.subflowId, workflows, payload.completion]);
+        setCheckedMap(newChecked);
+    }, [workflows, payload.processId, payload.subflowId, payload.completion]);
 
     // Sync workflows to localStorage whenever they change
     useEffect(() => {
@@ -101,19 +103,32 @@ export function ChecklistDetail() {
 
     // Handle checkbox toggle and update workflows/localStorage
     const handleToggle = (id: string) => {
-        setCheckedMap(prev => {
-            const updated = { ...prev, [id]: !prev[id] };
-            // Update workflows and localStorage
-            if (workflow && status) {
-                if (updated[id]) {
-                    if (!status.completion.includes(id)) status.completion.push(id);
-                } else {
-                    status.completion = status.completion.filter((cid: string) => cid !== id);
-                }
-                setWorkflows([...workflows]);
-            }
-            return updated;
-        });
+        // Find latest workflows from localStorage
+        const stored = localStorage.getItem('mockWorkflows');
+        let latestWorkflows = workflows;
+        if (stored) {
+            try {
+                latestWorkflows = JSON.parse(stored);
+            } catch {}
+        }
+        // Find the current workflow and status
+        const wfIdx = latestWorkflows.findIndex((wf: WorkflowData) => wf.processId === payload.processId);
+        if (wfIdx === -1) return;
+        const wf = latestWorkflows[wfIdx];
+        const stIdx = wf.statuses.findIndex((st: StatusData) => st.subflowId === payload.subflowId);
+        if (stIdx === -1) return;
+        const st = wf.statuses[stIdx];
+        // Toggle step ID
+        if (st.completion.includes(id)) {
+            st.completion = st.completion.filter((cid: string) => cid !== id);
+        } else {
+            st.completion.push(id);
+        }
+        // Update localStorage and state
+        latestWorkflows[wfIdx].statuses[stIdx] = st;
+        localStorage.setItem('mockWorkflows', JSON.stringify(latestWorkflows));
+        setWorkflows([...latestWorkflows]);
+        // Wave animation
         if (!checkedMap[id]) {
             setWaveMap(prev => ({ ...prev, [id]: true }));
             setTimeout(() => setWaveMap(prev => ({ ...prev, [id]: false })), 700);
