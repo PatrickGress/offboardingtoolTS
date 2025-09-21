@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { WorkflowCard } from './WorkflowCard';
 import { FilterPanel } from './FilterPanel';
 import type { WorkflowOverviewProps } from './OverviewContainer';
-import { mockWorkflows } from '../mockCards';
+import { mockWorkflows } from '../mockProcesses';
 import { initialAreas } from '../mockAreas';
 
 const sortOptions = [

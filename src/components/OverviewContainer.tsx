@@ -4,7 +4,7 @@ import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { WorkflowOverview } from './WorkflowOverview';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { mockWorkflows } from '../mockCards';
+import { mockWorkflows } from '../mockProcesses';
 import { initialAreas } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
 

@@ -5,12 +5,13 @@ import { subflowCards } from '../mockSubflowCards';
 import { useNavigate } from 'react-router-dom';
 
 export type StatusData = {
-  completion: string[]; // checked step ids
+  completion: string[];
   subflowId: string;
 };
 
 export type WorkflowData = {
   id: string;
+  processId: string;
   name: string;
   email: string;
   department: string;
@@ -88,7 +89,20 @@ export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = f
           if (color === 'green') bg = '#43a047';
           return (
             <td key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center', cursor: 'pointer' }}
-              onClick={() => navigate(`/checklist-detail/${status.subflowId}`, { state: { processId: data.id, completion: status.completion, subflowId: status.subflowId } })}
+              onClick={() => navigate(`/checklist-detail/${status.subflowId}`, {
+                state: {
+                  processId: data.processId || data.id,
+                  completion: status.completion,
+                  subflowId: status.subflowId,
+                  name: data.name,
+                  email: data.email,
+                  location: data.location,
+                  picture: data.picture,
+                  department: data.department,
+                  teamlead: data.teamlead,
+                  exitDate: data.exitDate
+                }
+              })}
             >
               <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 22, borderRadius: '12px / 50%', fontSize: '0.95rem', fontWeight: 600, color: '#fff', background: bg }}>{`${status.completion.length}/${totalSteps}`}</span>
             </td>

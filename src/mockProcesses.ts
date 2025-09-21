@@ -1,10 +1,5 @@
 import { subflowCards } from './mockSubflowCards';
-import type { WorkflowData } from './components/WorkflowCard';
-
-export type StatusData = {
-  completion: string[]; // array of checked step ids
-  subflowId: string;
-};
+import type { WorkflowData, StatusData } from './components/WorkflowCard';
 
 export const mockWorkflows: (WorkflowData & { processId: string; statuses: StatusData[] })[] = [
   {
