@@ -69,7 +69,30 @@ export function WorkflowOverview({ onWorkflowClick, filtersOpen, setFiltersOpen,
                         Ongoing Processes ({sortedWorkflows.length})
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <IconButton color="primary" onClick={handleFilterButtonClick} sx={{ mr: 1, display: 'flex', alignItems: 'center', gap: 1, position: 'relative' }}>
+                        <IconButton
+                            color="primary"
+                            onClick={handleFilterButtonClick}
+                            sx={{
+                                mr: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                                position: 'relative',
+                                border: '2px solid #1976d2',
+                                borderRadius: 2,
+                                background: filtersOpen ? '#e3f2fd' : '#fff',
+                                boxShadow: filtersOpen ? 2 : 0,
+                                transition: 'background 0.2s, box-shadow 0.2s',
+                                '&:hover': {
+                                    background: '#e3f2fd',
+                                    boxShadow: 3,
+                                    borderColor: '#1565c0',
+                                },
+                                minHeight: 44,
+                                minWidth: 120,
+                                px: 2,
+                            }}
+                        >
                             {filtersOpen ? <CloseIcon /> : <FilterAltIcon />}
                             {!filtersOpen && activeFilterCount > 0 && (
                                 <Box sx={{ ml: 0.5, bgcolor: '#d32f2f', color: '#fff', borderRadius: '50%', minWidth: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.95rem', fontWeight: 700, boxShadow: 2 }}>
