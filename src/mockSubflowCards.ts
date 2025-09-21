@@ -1,16 +1,4 @@
-export type SubflowCheckpoint = {
-  id: string;
-  text: string;
-};
-
-export type SubflowCard = {
-  id: string;
-  areaId: string;
-  name: string;
-  useCase: string;
-  checkpointIds: string[];
-  newVersionId?: string;
-};
+import type { SubflowCard } from './types/subflow';
 
 export const subflowCards: SubflowCard[] = [
   // HR

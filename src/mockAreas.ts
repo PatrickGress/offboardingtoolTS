@@ -1,4 +1,4 @@
-export type Area = { id: string; name: string; shortname: string };
+import type { Area } from './types/area';
 
 export const initialAreas: Area[] = [
   { id: 'b7e2c7e2-1a2b-4c3d-8e9f-1a2b3c4d5e6f', name: 'HR', shortname: 'HR' },

@@ -1,21 +1,9 @@
+import type { SubflowCheckpoint } from './types/subflow';
+
 export enum SubflowCheckpointClass {
   TextDocument = 'text document',
   Interview = 'interview',
 }
-
-// A minimal rich text document type (Slate.js-like)
-export type RichTextNode = {
-  type: 'paragraph' | 'heading' | 'list' | 'text';
-  children: Array<RichTextNode> | string;
-};
-
-export type SubflowCheckpoint = {
-  id: string;
-  class: SubflowCheckpointClass;
-  headline: string;
-  description: string;
-  body: RichTextNode[];
-};
 
 export const subflowSteps: SubflowCheckpoint[] = [
   // Voluntary Resignation – Standard HR Process

@@ -1,5 +1,5 @@
 import { subflowCards } from './mockSubflowCards';
-import type { WorkflowData } from './components/WorkflowCard';
+import type { WorkflowData } from './types/workflow';
 
 export const mockWorkflows: WorkflowData[] = [
   {
