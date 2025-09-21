@@ -4,15 +4,7 @@ import { initialAreas } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
 import { useNavigate } from 'react-router-dom';
 import type { WorkflowData } from '../types/workflow';
-
-// Helper to determine traffic light color for subflows
-function getSubflowTrafficLight(completion: string[], total: number): string {
-    if (total === 0) return 'red';
-    if (completion.length === 0) return 'red';
-    const percent = completion.length / total;
-    if (percent < 1) return 'yellow';
-    return 'green';
-}
+import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 
 export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
     const areaColumns = initialAreas;

@@ -7,24 +7,9 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { mockWorkflows } from '../mockProcesses';
 import { initialAreas } from '../mockAreas';
 import { subflowCards } from '../mockSubflowCards';
-
-// Helper functions
-const getUnique = (arr: any[], key: string) => Array.from(new Set(arr.map(item => item[key]).filter(Boolean)));
-function getDateTrafficLight(exitDate: string): string {
-  const exit = new Date(exitDate);
-  const now = new Date();
-  const diffDays = (exit.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
-  if (diffDays < 14) return 'red';
-  if (diffDays < 30) return 'yellow';
-  return 'green';
-}
-function getSubflowTrafficLight(completion: string[], total: number): string {
-  if (total === 0) return 'red';
-  const percent = completion.length / total;
-  if (percent < 0.5) return 'red';
-  if (percent < 1) return 'yellow';
-  return 'green';
-}
+import { getUnique } from '../utils/arrayHelpers';
+import { getDateTrafficLight } from '../utils/dateHelpers';
+import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 
 // Types
 export type SubflowFilters = { [key: string]: string };
