@@ -1,7 +1,7 @@
 import { subflowCards } from './mockSubflowCards';
-import type { WorkflowData, StatusData } from './components/WorkflowCard';
+import type { WorkflowData } from './components/WorkflowCard';
 
-export const mockWorkflows: (WorkflowData & { processId: string; statuses: StatusData[] })[] = [
+export const mockWorkflows: WorkflowData[] = [
   {
     id: '1',
     processId: 'e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01',
@@ -136,7 +136,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     location: 'Berlin',
     teamlead: 'John Miller',
     exitDate: '2025-10-25',
-    picture: 'https://mui.com/static/images/avatar/8.jpg',
+    picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
       { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
       { completion: [], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
@@ -154,7 +154,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     location: 'Munich',
     teamlead: 'Emily Clark',
     exitDate: '2025-10-30',
-    picture: 'https://mui.com/static/images/avatar/9.jpg',
+    picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
       { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
       { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
@@ -172,7 +172,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     location: 'Berlin',
     teamlead: 'Lisa Schmidt',
     exitDate: '2025-11-05',
-    picture: 'https://mui.com/static/images/avatar/10.jpg',
+    picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
       { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
       { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
@@ -190,7 +190,7 @@ export const mockWorkflows: (WorkflowData & { processId: string; statuses: Statu
     location: 'Hamburg',
     teamlead: 'John Miller',
     exitDate: '2025-11-10',
-    picture: 'https://mui.com/static/images/avatar/11.jpg',
+    picture: 'https://mui.com/static/images/avatar/3.jpg',
     statuses: [
       { completion: ['j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10'], subflowId: 'j1l0m5k9-0c2d-3e4f-5g6h-0j1k2l3m4n10' },
       { completion: ['i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f'], subflowId: 'i2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f' },
