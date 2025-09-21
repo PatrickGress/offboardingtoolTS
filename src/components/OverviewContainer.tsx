@@ -10,6 +10,7 @@ import { subflowCards } from '../mockSubflowCards';
 import { getUnique } from '../utils/arrayHelpers';
 import { getDateTrafficLight } from '../utils/dateHelpers';
 import { getSubflowTrafficLight } from '../utils/subflowHelpers';
+import type { StatusData, WorkflowData } from '../types/workflow';
 
 // Types
 export type SubflowFilters = { [key: string]: string };
@@ -52,6 +53,18 @@ export interface WorkflowOverviewProps {
   activeFilterCount: number;
 }
 
+function loadWorkflows() {
+  const stored = localStorage.getItem('mockWorkflows');
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch {
+      return mockWorkflows;
+    }
+  }
+  return mockWorkflows;
+}
+
 export function OverviewContainer() {
   // State
   const [search, setSearch] = useState('');
@@ -68,20 +81,22 @@ export function OverviewContainer() {
   const teamleadDropdownClosedByClick = useRef(false);
   const [subflowFilters, setSubflowFilters] = useState<SubflowFilters>({});
 
+  const workflows = loadWorkflows();
+
   // Memoized values
-  const teamleads = useMemo(() => getUnique(mockWorkflows, 'teamlead'), []);
-  const departments = useMemo(() => getUnique(mockWorkflows, 'department'), []);
-  const locations = useMemo(() => getUnique(mockWorkflows, 'location'), []);
+  const teamleads = useMemo(() => getUnique(workflows, 'teamlead'), [workflows]);
+  const departments = useMemo(() => getUnique(workflows, 'department'), [workflows]);
+  const locations = useMemo(() => getUnique(workflows, 'location'), [workflows]);
   const criticality = useMemo(() => {
-    const dateColors = mockWorkflows.map(wf => getDateTrafficLight(wf.exitDate));
-    const subflowColors = mockWorkflows.flatMap(wf => wf.statuses.map(s => {
+    const dateColors = workflows.map((wf: WorkflowData) => getDateTrafficLight(wf.exitDate));
+    const subflowColors = workflows.flatMap((wf: WorkflowData) => wf.statuses.map((s: StatusData) => {
       const subflowCard = subflowCards.find((card: { id: string }) => card.id === s.subflowId);
       const total = subflowCard ? subflowCard.checkpointIds.length : 0;
       return getSubflowTrafficLight(s.completion, total);
     }));
     const allColors = [...dateColors, ...subflowColors];
     return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
-  }, []);
+  }, [workflows]);
   const areaShortnames = initialAreas.map((a: { shortname: string }) => a.shortname);
   const subflowNames = areaShortnames;
 
@@ -99,8 +114,8 @@ export function OverviewContainer() {
   const nameResults = useMemo(() => {
     if (debouncedSearch.length < 3) return [];
     const searchLower = debouncedSearch.toLowerCase();
-    return mockWorkflows.filter(wf => wf.name.toLowerCase().includes(searchLower)).map(wf => wf.name);
-  }, [debouncedSearch]);
+    return workflows.filter((wf: WorkflowData) => wf.name.toLowerCase().includes(searchLower)).map((wf: WorkflowData) => wf.name);
+  }, [debouncedSearch, workflows]);
   const teamleadResults = useMemo(() => {
     if (debouncedTeamleadSearch.length < 3) return [];
     const searchLower = debouncedTeamleadSearch.toLowerCase();
@@ -126,7 +141,7 @@ export function OverviewContainer() {
   }, [teamleadResults]);
 
   // Filtering logic
-  const filteredWorkflows = mockWorkflows.filter(wf => {
+  const filteredWorkflows = workflows.filter((wf: WorkflowData) => {
     const searchLower = debouncedSearch.toLowerCase();
     const teamleadLower = debouncedTeamleadSearch.toLowerCase();
     if (searchLower && !(
@@ -139,7 +154,7 @@ export function OverviewContainer() {
     if (location && wf.location !== location) return false;
     if (crit) {
       const dateColor = getDateTrafficLight(wf.exitDate);
-      const anyStatusMatch = wf.statuses.some(s => {
+      const anyStatusMatch = wf.statuses.some((s: StatusData) => {
         const subflowCard = subflowCards.find((card: { id: string }) => card.id === s.subflowId);
         const total = subflowCard ? subflowCard.checkpointIds.length : 0;
         return getSubflowTrafficLight(s.completion, total) === crit;
