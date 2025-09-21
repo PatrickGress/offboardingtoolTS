@@ -41,7 +41,7 @@ function loadWorkflows() {
     return mockWorkflows;
 }
 
-export function WorkflowOverview({ onWorkflowClick, workflows, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: WorkflowOverviewProps) {
+export function WorkflowOverview({ onWorkflowClick, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount }: WorkflowOverviewProps) {
     const [sortBy, setSortBy] = useState('exitDate');
     const [localWorkflows, setLocalWorkflows] = useState(loadWorkflows());
 

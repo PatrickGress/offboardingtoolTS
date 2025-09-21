@@ -160,7 +160,7 @@ export function FilterPanel({
         </Box>
         {/* New row for subflow filters */}
         <Box sx={{ width: '100%', display: 'flex', gap: 2, mt: 2 }}>
-          {subflowNames.map((subflow: string, idx: number) => (
+          {subflowNames.map((subflow: string) => (
             <FormControl key={subflow} size="small" sx={{ minWidth: 140 }}>
               <InputLabel>{subflow} Status</InputLabel>
               <Select
