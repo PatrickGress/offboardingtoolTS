@@ -27,7 +27,12 @@ export function DebugNav() {
         </ListItem>
       </List>
       <List>
-        {[...Array(3)].map((_, idx) => (
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/person-process/e2a1c7b2-1f3a-4b2c-9e8f-1a2b3c4d5e01">
+            Person Process Overview (Hans Herman)
+          </ListItemButton>
+        </ListItem>
+        {[...Array(2)].map((_, idx) => (
           <ListItem key={idx}>
             Placeholder {idx + 1}
           </ListItem>

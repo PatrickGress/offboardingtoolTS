@@ -14,6 +14,7 @@ export const mockWorkflows: WorkflowData[] = [
     picture: 'https://mui.com/static/images/avatar/1.jpg',
     statuses: [
       { completion: [], subflowId: 'h1c2d3e4-5f6a-7b8c-9d0e-1f2a3b4c5d6e' },
+      { completion: [], subflowId: 'test' },
       { completion: [], subflowId: 'f1a2b3c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c' },
       { completion: [], subflowId: 'j3k4l5m6-7n8o-9p0q-1r2s-3t4u5v6w7x8y' },
     ],

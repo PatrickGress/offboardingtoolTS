@@ -5,6 +5,7 @@ import { DebugNav } from './components/DebugNav';
 import { OverviewContainer } from './components/OverviewContainer';
 import { ChecklistOverview } from './components/ChecklistOverview';
 import { ChecklistDetail } from './components/ChecklistDetail';
+import { PersonProcessOverview } from './components/PersonProcessOverview';
 
 import './App.css';
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<OverviewContainer />} />
             <Route path="/checklist-overview" element={<ChecklistOverview />} />
             <Route path="/checklist-detail/:cardId" element={<ChecklistDetail />} />
+            <Route path="/person-process/:processId" element={<PersonProcessOverview />} />
           </Routes>
         </Box>
       </Box>

@@ -142,7 +142,7 @@ export function WorkflowOverview({ onWorkflowClick, filtersOpen, setFiltersOpen,
                     </thead>
                     <tbody>
                         {sortedWorkflows.map((wf, idx) => (
-                            <WorkflowCard key={wf.id} data={wf} onNameClick={onWorkflowClick} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
+                            <WorkflowCard key={wf.id} data={wf} onNameClick={() => onWorkflowClick(wf.processId || wf.id)} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
                         ))}
                     </tbody>
                 </table>

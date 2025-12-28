@@ -1,0 +1,2 @@
+* design the detail page per person with the processes overview
+* click in the chart to get to detail page

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { initialAreas } from '../mockAreas';
 import type { Area } from '../types/area';
 import { subflowCards } from '../mockSubflowCards';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function ChecklistOverview() {
     const [areas, setAreas] = useState<Area[]>(() => {
@@ -19,7 +19,6 @@ export function ChecklistOverview() {
     const [newAreaName, setNewAreaName] = useState('');
     const [newAreaShort, setNewAreaShort] = useState('');
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
         localStorage.setItem('areas', JSON.stringify(areas));
@@ -65,10 +64,18 @@ export function ChecklistOverview() {
                     const cards = subflowCards.filter(card => card.areaId === area.id);
                     const isExpanded = expandedAreas.includes(area.id);
                     return (
-                        <Card key={area.id} sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Card
+                            key={area.id}
+                            sx={{ mb: 2, p: 2, bgcolor: '#fafafa', borderRadius: 2, boxShadow: 1, cursor: isExpanded ? 'default' : 'pointer' }}
+                            onClick={!isExpanded ? () => handleExpand(area.id) : undefined}
+                            aria-expanded={isExpanded}
+                        >
+                            <Box
+                                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                                onClick={isExpanded ? () => handleExpand(area.id) : undefined}
+                            >
                                 <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.05rem' }}>{area.name}</Typography>
-                                <IconButton onClick={() => handleExpand(area.id)}>
+                                <IconButton onClick={(e: React.MouseEvent<HTMLElement>) => { e.stopPropagation(); handleExpand(area.id); }}>
                                     {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                                 </IconButton>
                             </Box>

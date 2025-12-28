@@ -3,6 +3,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { WorkflowOverview } from './WorkflowOverview';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { mockWorkflows } from '../mockProcesses';
 import { initialAreas } from '../mockAreas';
@@ -45,7 +46,7 @@ export interface FilterPanelProps {
 }
 
 export interface WorkflowOverviewProps {
-  onWorkflowClick: () => void;
+  onWorkflowClick: (processId: string) => void;
   workflows: any[];
   filtersOpen: boolean;
   setFiltersOpen: (v: boolean) => void;
@@ -66,6 +67,7 @@ function loadWorkflows() {
 }
 
 export function OverviewContainer() {
+  const navigate = useNavigate();
   // State
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -219,7 +221,7 @@ export function OverviewContainer() {
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
         <Box sx={{ ml: 2 }}>
           <WorkflowOverview
-            onWorkflowClick={() => {}}
+            onWorkflowClick={(processId: string) => navigate(`/person-process/${processId}`)}
             workflows={filteredWorkflows}
             filtersOpen={filtersOpen}
             setFiltersOpen={setFiltersOpen}
