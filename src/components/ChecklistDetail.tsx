@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from '@mui/material';
 import { useParams, useLocation } from 'react-router-dom';
 import { subflowCards } from '../mockSubflowCards';
+import { PersonDataCard } from './PersonDataCard';
 import { subflowSteps } from '../mockSubflowSteps';
 import type { SubflowCheckpoint } from '../types/subflow';
 import { useState, useEffect } from 'react';
@@ -180,20 +181,7 @@ export function ChecklistDetail() {
                 </Box>
                 {/* Sub-level header for ongoing process info */}
                 {payload.processId && workflow && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 2, pl: 1, py: 2, border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: '#f9f9f9', boxShadow: 1, minHeight: 80 }}>
-                        <img src={workflow.picture} alt={workflow.name} style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', border: '2px solid #1976d2', background: '#fff', marginRight: 24 }} />
-                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4, width: '100%' }}>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', minWidth: 180, width: '22%' }}>
-                                <Typography variant="h6" sx={{ fontWeight: 700, color: '#1976d2', mb: 0 }}>{workflow.name}</Typography>
-                                <Typography variant="body2" sx={{ color: '#555', fontWeight: 400, mt: 0.5 }}>{workflow.email}</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4, width: '78%' }}>
-                                <Typography variant="body2" sx={{ color: '#333', fontWeight: 500, fontSize: '1.08rem', width: '20%', minWidth: 140, maxWidth: 180, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ fontWeight: 400, color: '#888', marginRight: 4 }}>Person Id:</span>{workflow.id}</Typography>
-                                <Typography variant="body2" sx={{ color: '#333', fontWeight: 500, fontSize: '1.08rem', width: '28%', minWidth: 120, maxWidth: 200, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ fontWeight: 400, color: '#888', marginRight: 4 }}>Exit Date:</span>{workflow.exitDate}</Typography>
-                                <Typography variant="body2" sx={{ color: '#333', fontWeight: 500, fontSize: '1.08rem', width: '28%', minWidth: 120, maxWidth: 200, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><span style={{ fontWeight: 400, color: '#888', marginRight: 4 }}>Teamlead:</span>{workflow.teamlead}</Typography>
-                            </Box>
-                        </Box>
-                    </Box>
+                    <PersonDataCard workflow={workflow} />
                 )}
                 <Typography variant="body1" sx={{ color: '#666', mb: 2, fontSize: '1.08rem', textAlign: 'left', maxWidth: 900 }}>
                     {card?.useCase}

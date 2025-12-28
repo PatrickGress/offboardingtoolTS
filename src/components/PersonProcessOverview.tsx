@@ -1,10 +1,12 @@
-import { Box, Typography, Card, Avatar } from '@mui/material';
+import { Box, Typography, Card } from '@mui/material';
+import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockWorkflows } from '../mockProcesses';
 import { subflowCards } from '../mockSubflowCards';
 import { subflowSteps } from '../mockSubflowSteps';
 import type { WorkflowData, StatusData } from '../types/workflow';
 import { initialAreas } from '../mockAreas';
+import { PersonDataCard } from './PersonDataCard';
 
 function loadWorkflows(): WorkflowData[] {
   const stored = localStorage.getItem('mockWorkflows');
@@ -47,47 +49,47 @@ export function PersonProcessOverview() {
 
   return (
     <Box sx={{ width: '1100px', maxWidth: 1200, ml: 8, py: 3, px: 4, mr: 6, bgcolor: '#f5f5f5' }}>
-      <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>Person Process Overview</Typography>
+  <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, pl: 0, textAlign: 'left' }}>Person Process Overview</Typography>
 
-      {/* Header like ChecklistDetail */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 3, pl: 1, py: 2, border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: '#fff', boxShadow: 1 }}>
-        <Avatar src={workflow.picture} alt={workflow.name} sx={{ width: 72, height: 72, border: '2px solid #1976d2' }} />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>{workflow.name}</Typography>
-          <Typography variant="body2" sx={{ color: '#666' }}>{workflow.email}</Typography>
-        </Box>
-        <Box sx={{ ml: 'auto', display: 'flex', gap: 3 }}>
-          <Typography variant="body2" sx={{ color: '#333' }}><strong>Person Id:</strong> {workflow.id}</Typography>
-          <Typography variant="body2" sx={{ color: '#333' }}><strong>Exit Date:</strong> {workflow.exitDate}</Typography>
-          <Typography variant="body2" sx={{ color: '#333' }}><strong>Teamlead:</strong> {workflow.teamlead}</Typography>
-        </Box>
-      </Box>
+      <PersonDataCard workflow={workflow} />
 
       {/* Tiles */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-        {workflow.statuses.map((status) => {
-          const card = subflowCards.find(c => c.id === status.subflowId);
-          const area = card ? initialAreas.find(a => a.id === card.areaId) : undefined;
-          const shortname = area ? area.shortname : 'UNK';
-          const total = card ? card.checkpointIds.length : 0;
-          const firstUnchecked = getFirstUnchecked(status);
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, gridAutoRows: '1fr' }}>
+        {workflow.statuses
+          .map(status => ({ status, card: subflowCards.find(c => c.id === status.subflowId) }))
+          .filter(({ card }) => !!card)
+          .map(({ status, card }) => {
+            const area = card ? initialAreas.find(a => a.id === card.areaId) : undefined;
+            const shortname = area ? area.shortname : 'UNK';
+            const total = card ? card.checkpointIds.length : 0;
+            const done = status.completion.length;
+            const firstUnchecked = getFirstUnchecked(status);
+            const trafficColor = getSubflowTrafficLight(status.completion, total);
+            let badgeBg = '#e53935';
+            if (trafficColor === 'yellow') badgeBg = '#fbc02d';
+            if (trafficColor === 'green') badgeBg = '#43a047';
 
-          return (
-            <Card
-              key={status.subflowId}
-              onClick={() => navigate(`/checklist-detail/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
-              sx={{ p: 2, height: 160, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1976d2' }}>{shortname} • {total}</Typography>
-              </Box>
-              <Box>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{card?.name ?? status.subflowId}</Typography>
-                <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>{firstUnchecked}</Typography>
-              </Box>
-            </Card>
-          );
-        })}
+            return (
+              <Card
+                key={status.subflowId}
+                onClick={() => navigate(`/checklist-detail/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
+                sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1976d2' }}>{shortname}</Typography>
+                  <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 46, height: 26, borderRadius: '14px', fontSize: '0.95rem', fontWeight: 700, color: '#fff', background: badgeBg }}>
+                      {`${done}/${total}`}
+                    </Box>
+                  </Box>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{card?.name ?? status.subflowId}</Typography>
+                  <Typography variant="body2" sx={{ color: '#666', mt: 1 }}>{firstUnchecked}</Typography>
+                </Box>
+              </Card>
+            );
+          })}
       </Box>
     </Box>
   );
