@@ -1,2 +1,8 @@
 * url should be fixed to show the ids of person and process where there are combination
 * 
+
+* make it a "corprate site" / content per company
+* move stuff into db
+* cohesive content / fit the pieces together
+* (backend services / db connections seperate)
+* publish using kubernetes / docker

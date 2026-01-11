@@ -1,5 +1,6 @@
 import { Box, Typography, Button } from '@mui/material';
 import { useParams, useLocation } from 'react-router-dom';
+import { BackNavigation } from './BackNavigation';
 import { subflowCards } from '../mockSubflowCards';
 import { PersonDataCard } from './PersonDataCard';
 import { subflowSteps } from '../mockSubflowSteps';
@@ -52,11 +53,12 @@ function getInitialWorkflows() {
 }
 
 export function ChecklistDetail() {
-    const { cardId } = useParams();
+    const { listId, stepId } = useParams();
     const location = useLocation();
     // Payload from navigation (processId, subflowId, completion, plus process info)
     const payload = location.state || {};
-    // Find card and checkpoints
+    // Find card and checkpoints - use listId or stepId
+    const cardId = listId || stepId;
     const card = subflowCards.find(c => c.id === cardId);
     const checkpoints = card ? card.checkpointIds.map(id => subflowSteps.find(s => s.id === id)).filter((cp): cp is SubflowCheckpoint => !!cp) : [];
 
@@ -164,6 +166,7 @@ export function ChecklistDetail() {
 
     return (
         <Box sx={{ width: '1100px', maxWidth: 1200, ml: 8, py: 3, px: 4, mr: 6, bgcolor: '#f5f5f5' }}>
+            <BackNavigation />
             {/* Header box: headline, description, steps header */}
             <Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>

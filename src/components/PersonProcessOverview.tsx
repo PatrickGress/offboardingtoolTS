@@ -1,4 +1,5 @@
 import { Box, Typography, Card } from '@mui/material';
+import { BackNavigation } from './BackNavigation';
 import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockWorkflows } from '../mockProcesses';
@@ -21,10 +22,11 @@ function loadWorkflows(): WorkflowData[] {
 }
 
 export function PersonProcessOverview() {
-  const { processId } = useParams();
+  const { employeeId } = useParams();
+  // listId can be used later for filtering specific lists
   const navigate = useNavigate();
   const workflows = loadWorkflows();
-  const workflow = workflows.find(w => w.processId === processId);
+  const workflow = workflows.find(w => w.processId === employeeId);
 
   if (!workflow) {
     return (
@@ -49,7 +51,8 @@ export function PersonProcessOverview() {
 
   return (
     <Box sx={{ width: '1100px', maxWidth: 1200, ml: 8, py: 3, px: 4, mr: 6, bgcolor: '#f5f5f5' }}>
-  <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, pl: 0, textAlign: 'left' }}>Person Process Overview</Typography>
+      <BackNavigation />
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, pl: 0, textAlign: 'left' }}>Person Process Overview</Typography>
 
       <PersonDataCard workflow={workflow} />
 
@@ -72,7 +75,7 @@ export function PersonProcessOverview() {
             return (
               <Card
                 key={status.subflowId}
-                onClick={() => navigate(`/checklist-detail/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
+                onClick={() => navigate(`/checklist/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
                 sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>

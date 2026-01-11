@@ -3,6 +3,7 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { WorkflowOverview } from './WorkflowOverview';
+import { BackNavigation } from './BackNavigation';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { mockWorkflows } from '../mockProcesses';
@@ -199,6 +200,10 @@ export function OverviewContainer() {
   // Render
   return (
     <Box sx={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mx: 'auto', mr: 6 }}>
+      {/* Back Navigation */}
+      <Box sx={{ width: '1100px', ml: 8, mt: 2 }}>
+        <BackNavigation />
+      </Box>
       {/* Headline row */}
       <Box sx={{ width: '1100px', position: 'relative', display: 'flex', alignItems: 'center', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, border: 'none', mb: 2, ml: 8 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -221,7 +226,7 @@ export function OverviewContainer() {
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
         <Box sx={{ ml: 2 }}>
           <WorkflowOverview
-            onWorkflowClick={(processId: string) => navigate(`/person-process/${processId}`)}
+            onWorkflowClick={(processId: string) => navigate(`/process/${processId}`)}
             workflows={filteredWorkflows}
             filtersOpen={filtersOpen}
             setFiltersOpen={setFiltersOpen}

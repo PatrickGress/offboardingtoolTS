@@ -17,9 +17,12 @@ function App() {
         <Box sx={{ flex: 1, p: 0 }}>
           <Routes>
             <Route path="/" element={<OverviewContainer />} />
-            <Route path="/checklist-overview" element={<ChecklistOverview />} />
-            <Route path="/checklist-detail/:cardId" element={<ChecklistDetail />} />
-            <Route path="/person-process/:processId" element={<PersonProcessOverview />} />
+            <Route path="/overview" element={<OverviewContainer />} />
+            <Route path="/areas" element={<ChecklistOverview />} />
+            <Route path="/checklist/:listId" element={<ChecklistDetail />} />
+            <Route path="/stepdetail/:stepId" element={<ChecklistDetail />} />
+            <Route path="/process/:employeeId" element={<PersonProcessOverview />} />
+            <Route path="/process/:employeeId/:listId" element={<PersonProcessOverview />} />
           </Routes>
         </Box>
       </Box>

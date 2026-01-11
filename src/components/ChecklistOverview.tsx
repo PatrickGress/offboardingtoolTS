@@ -2,6 +2,7 @@ import { Box, Typography, Button, Card, Collapse, IconButton, Modal, TextField }
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { BackNavigation } from './BackNavigation';
 import { useState, useEffect } from 'react';
 import { initialAreas } from '../mockAreas';
 import type { Area } from '../types/area';
@@ -51,6 +52,9 @@ export function ChecklistOverview() {
 
     return (
         <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mr: 6 }}>
+            <Box sx={{ width: '1100px', ml: 8, mt: 2 }}>
+                <BackNavigation />
+            </Box>
             <Box sx={{ width: '1100px', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, mb: 2, ml: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pl: 0 }}>
                     Checklist Overview
@@ -82,7 +86,7 @@ export function ChecklistOverview() {
                             <Collapse in={isExpanded}>
                                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, mt: 2 }}>
                                     {cards.map(card => (
-                                        <Card key={card.id} sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', p: 2, overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate(`/checklist-detail/${card.id}`)}>
+                                        <Card key={card.id} sx={{ height: 180, minWidth: 0, maxWidth: '100%', bgcolor: '#fff', borderRadius: 2, boxShadow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', p: 2, overflow: 'hidden', cursor: 'pointer' }} onClick={() => navigate(`/checklist/${card.id}`)}>
                                             <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '1.08rem', mb: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
                                                 {card.name}
                                             </Typography>
