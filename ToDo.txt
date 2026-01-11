@@ -11,3 +11,11 @@
 //IDEAS
 * user role that is connected to a navbar shortcut "my tasks"
 maybe based on the supervisor id?
+
+
+//NEXT STEP
+nachforschung: mycompany.overboardingtool
+ist das teil von kubernetes/docker oder deployment oder 
+kann ich das mit login zusammen setzten?
+login eher nicht, weil login user rollen per company haben soll
+
