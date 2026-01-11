@@ -53,13 +53,15 @@ function getInitialWorkflows() {
 }
 
 export function ChecklistDetail() {
-    const { listId, stepId } = useParams();
+    const { listId, stepId, employeeId } = useParams();
     const location = useLocation();
     // Payload from navigation (processId, subflowId, completion, plus process info)
     const payload = location.state || {};
     // Find card and checkpoints - use listId or stepId
     const cardId = listId || stepId;
     const card = subflowCards.find(c => c.id === cardId);
+    // Use employeeId from URL if available, otherwise fall back to payload
+    const processId = employeeId || payload.processId;
     const checkpoints = card ? card.checkpointIds.map(id => subflowSteps.find(s => s.id === id)).filter((cp): cp is SubflowCheckpoint => !!cp) : [];
 
     // Local state for workflows, loaded from localStorage or mock file
@@ -68,9 +70,10 @@ export function ChecklistDetail() {
     // Find workflow and status for this card
     let workflow: WorkflowData | undefined = undefined;
     let status: StatusData | undefined = undefined;
-    if (payload.processId && payload.subflowId) {
-        workflow = workflows.find((w: WorkflowData) => w.processId === payload.processId);
-        status = workflow?.statuses?.find((s: StatusData) => s.subflowId === payload.subflowId);
+    if (processId && (payload.subflowId || cardId)) {
+        workflow = workflows.find((w: WorkflowData) => w.processId === processId);
+        const subflowId = payload.subflowId || cardId;
+        status = workflow?.statuses?.find((s: StatusData) => s.subflowId === subflowId);
     }
 
     const initialChecked: Record<string, boolean> = {};
@@ -87,9 +90,10 @@ export function ChecklistDetail() {
     // Update checkedMap whenever workflows, payload, or status change
     useEffect(() => {
         let newChecked: Record<string, boolean> = {};
-        if (payload.processId && payload.subflowId) {
-            const wf = workflows.find((w: WorkflowData) => w.processId === payload.processId);
-            const st = wf?.statuses?.find((s: StatusData) => s.subflowId === payload.subflowId);
+        if (processId && (payload.subflowId || cardId)) {
+            const wf = workflows.find((w: WorkflowData) => w.processId === processId);
+            const subflowId = payload.subflowId || cardId;
+            const st = wf?.statuses?.find((s: StatusData) => s.subflowId === subflowId);
             if (st && Array.isArray(st.completion)) {
                 st.completion.forEach((id: string) => { newChecked[id] = true; });
             }
@@ -97,7 +101,7 @@ export function ChecklistDetail() {
             (payload.completion as string[]).forEach((id: string) => { newChecked[id] = true; });
         }
         setCheckedMap(newChecked);
-    }, [workflows, payload.processId, payload.subflowId, payload.completion]);
+    }, [workflows, processId, payload.subflowId, payload.completion, cardId]);
 
     // Sync workflows to localStorage whenever they change
     useEffect(() => {
@@ -115,10 +119,11 @@ export function ChecklistDetail() {
             } catch {}
         }
         // Find the current workflow and status
-        const wfIdx = latestWorkflows.findIndex((wf: WorkflowData) => wf.processId === payload.processId);
+        const wfIdx = latestWorkflows.findIndex((wf: WorkflowData) => wf.processId === processId);
         if (wfIdx === -1) return;
         const wf = latestWorkflows[wfIdx];
-        const stIdx = wf.statuses.findIndex((st: StatusData) => st.subflowId === payload.subflowId);
+        const subflowId = payload.subflowId || cardId;
+        const stIdx = wf.statuses.findIndex((st: StatusData) => st.subflowId === subflowId);
         if (stIdx === -1) return;
         const st = wf.statuses[stIdx];
         // Toggle step ID
@@ -173,8 +178,8 @@ export function ChecklistDetail() {
                     <Typography variant="h4" sx={{ fontWeight: 700, pl: 0, textAlign: 'left', maxWidth: 600, whiteSpace: 'normal', wordBreak: 'break-word' }}>
                         {card?.name}
                     </Typography>
-                    {/* Hide buttons if payload is present */}
-                    {!payload.processId && (
+                    {/* Hide buttons if processId is present */}
+                    {!processId && (
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             <Button variant="contained" color="primary" sx={{ fontWeight: 700 }}>Edit</Button>
                             <Button variant="outlined" color="primary" sx={{ fontWeight: 700 }}>Copy</Button>
@@ -183,7 +188,7 @@ export function ChecklistDetail() {
                     )}
                 </Box>
                 {/* Sub-level header for ongoing process info */}
-                {payload.processId && workflow && (
+                {processId && workflow && (
                     <PersonDataCard workflow={workflow} />
                 )}
                 <Typography variant="body1" sx={{ color: '#666', mb: 2, fontSize: '1.08rem', textAlign: 'left', maxWidth: 900 }}>
@@ -191,7 +196,7 @@ export function ChecklistDetail() {
                 </Typography>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, textAlign: 'left' }}>Steps</Typography>
                 {/* Check all / Uncheck all buttons */}
-                {payload.processId && (
+                {processId && (
                     <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                         <Button variant="contained" color="success" disabled={allChecked} onClick={handleCheckAll}>Check all</Button>
                         <Button variant="outlined" color="warning" disabled={noneChecked} onClick={handleUncheckAll}>Uncheck all</Button>
@@ -206,7 +211,7 @@ export function ChecklistDetail() {
                     {checkpoints.map(cp => (
                         <Box key={cp.id} sx={{ position: 'relative', bgcolor: '#fff', borderRadius: 2, boxShadow: 2, border: '1px solid #e0e0e0', p: 4, minHeight: 120, maxWidth: 900, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
                             <WaveOverlay className={waveMap[cp.id] ? 'active' : ''} />
-                            {payload.processId && (
+                            {processId && (
                                 <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 3 }}>
                                     <Checkbox
                                         checked={!!checkedMap[cp.id]}

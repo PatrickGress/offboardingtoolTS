@@ -22,7 +22,7 @@ function App() {
             <Route path="/checklist/:listId" element={<ChecklistDetail />} />
             <Route path="/stepdetail/:stepId" element={<ChecklistDetail />} />
             <Route path="/process/:employeeId" element={<PersonProcessOverview />} />
-            <Route path="/process/:employeeId/:listId" element={<PersonProcessOverview />} />
+            <Route path="/process/:employeeId/:listId" element={<ChecklistDetail />} />
           </Routes>
         </Box>
       </Box>

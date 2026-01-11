@@ -75,7 +75,7 @@ export function PersonProcessOverview() {
             return (
               <Card
                 key={status.subflowId}
-                onClick={() => navigate(`/checklist/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
+                onClick={() => navigate(`/process/${workflow.processId}/${status.subflowId}`, { state: { processId: workflow.processId, subflowId: status.subflowId, completion: status.completion } })}
                 sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
