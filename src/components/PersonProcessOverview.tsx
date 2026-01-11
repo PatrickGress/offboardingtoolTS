@@ -50,7 +50,7 @@ export function PersonProcessOverview() {
   };
 
   return (
-    <Box sx={{ width: '1100px', maxWidth: 1200, ml: 8, py: 3, px: 4, mr: 6, bgcolor: '#f5f5f5' }}>
+    <Box sx={{ width: '100%', maxWidth: 1200, py: 3, px: 4, bgcolor: '#f5f5f5' }}>
       <BackNavigation />
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, pl: 0, textAlign: 'left' }}>Person Process Overview</Typography>
 

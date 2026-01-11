@@ -6,3 +6,8 @@
 * cohesive content / fit the pieces together
 * (backend services / db connections seperate)
 * publish using kubernetes / docker
+
+
+//IDEAS
+* user role that is connected to a navbar shortcut "my tasks"
+maybe based on the supervisor id?

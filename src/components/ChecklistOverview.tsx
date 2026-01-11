@@ -51,11 +51,11 @@ export function ChecklistOverview() {
     // Access payload: location.state?.processId, location.state?.completion, location.state?.subflowId
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 1200, mx: 'auto', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0, mr: 6 }}>
-            <Box sx={{ width: '1100px', ml: 8, mt: 2 }}>
+        <Box sx={{ width: '100%', maxWidth: '100%', mx: 'auto', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0 }}>
+            <Box sx={{ width: '100%', px: 4, mt: 2 }}>
                 <BackNavigation />
             </Box>
-            <Box sx={{ width: '1100px', py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, mb: 2, ml: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ width: '100%', maxWidth: 1200, py: 3, px: 4, bgcolor: '#f5f5f5', borderRadius: 2, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5, pl: 0 }}>
                     Checklist Overview
                 </Typography>
@@ -63,7 +63,7 @@ export function ChecklistOverview() {
                     Create New Area
                 </Button>
             </Box>
-            <Box sx={{ width: '1100px', ml: 8 }}>
+            <Box sx={{ width: '100%', maxWidth: 1200, px: 4 }}>
                 {areas.map(area => {
                     const cards = subflowCards.filter(card => card.areaId === area.id);
                     const isExpanded = expandedAreas.includes(area.id);
