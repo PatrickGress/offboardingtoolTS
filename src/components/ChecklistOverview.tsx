@@ -4,16 +4,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { BackNavigation } from './BackNavigation';
 import { useState, useEffect } from 'react';
-import { initialAreas } from '../mockAreas';
 import type { Area } from '../types/area';
-import { subflowCards } from '../mockSubflowCards';
+import type { SubflowCard } from '../types/subflow';
 import { useNavigate } from 'react-router-dom';
 
 export function ChecklistOverview() {
-    const [areas, setAreas] = useState<Area[]>(() => {
-        const stored = localStorage.getItem('areas');
-        return stored ? JSON.parse(stored) : initialAreas;
-    });
+    const [areas, setAreas] = useState<Area[]>([]);
+    const [subflowCards, setSubflowCards] = useState<SubflowCard[]>([]);
     // Use an array of expanded area ids for true multi-expand
     const [expandedAreas, setExpandedAreas] = useState<string[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -21,9 +18,27 @@ export function ChecklistOverview() {
     const [newAreaShort, setNewAreaShort] = useState('');
     const navigate = useNavigate();
 
+    // Fetch areas and subflow cards from backend
     useEffect(() => {
-        localStorage.setItem('areas', JSON.stringify(areas));
-    }, [areas]);
+        console.log('ChecklistOverview: Starting data fetch...');
+        Promise.all([
+            fetch('http://localhost:3000/areas').then(res => {
+                console.log('ChecklistOverview areas response:', res.status);
+                return res.json();
+            }),
+            fetch('http://localhost:3000/subflow-cards').then(res => {
+                console.log('ChecklistOverview subflow-cards response:', res.status);
+                return res.json();
+            })
+        ])
+            .then(([areasData, cardsData]) => {
+                console.log('ChecklistOverview fetched areas:', areasData);
+                console.log('ChecklistOverview fetched subflow cards:', cardsData);
+                setAreas(areasData);
+                setSubflowCards(cardsData);
+            })
+            .catch(error => console.error('ChecklistOverview error fetching data:', error));
+    }, []);
 
     const handleExpand = (areaId: string) => {
         setExpandedAreas(prev =>

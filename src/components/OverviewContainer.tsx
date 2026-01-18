@@ -6,13 +6,12 @@ import { WorkflowOverview } from './WorkflowOverview';
 import { BackNavigation } from './BackNavigation';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { mockWorkflows } from '../mockProcesses';
-import { initialAreas } from '../mockAreas';
-import { subflowCards } from '../mockSubflowCards';
 import { getUnique } from '../utils/arrayHelpers';
 import { getDateTrafficLight } from '../utils/dateHelpers';
 import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 import type { StatusData, WorkflowData } from '../types/workflow';
+import type { Area } from '../types/area';
+import type { SubflowCard } from '../types/subflow';
 
 // Types
 export type SubflowFilters = { [key: string]: string };
@@ -55,18 +54,6 @@ export interface WorkflowOverviewProps {
   activeFilterCount: number;
 }
 
-function loadWorkflows() {
-  const stored = localStorage.getItem('mockWorkflows');
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
-      return mockWorkflows;
-    }
-  }
-  return mockWorkflows;
-}
-
 export function OverviewContainer() {
   const navigate = useNavigate();
   // State
@@ -83,8 +70,31 @@ export function OverviewContainer() {
   const nameDropdownClosedByClick = useRef(false);
   const teamleadDropdownClosedByClick = useRef(false);
   const [subflowFilters, setSubflowFilters] = useState<SubflowFilters>({});
+  
+  // Data state
+  const [workflows, setWorkflows] = useState<WorkflowData[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
+  const [subflowCards, setSubflowCards] = useState<SubflowCard[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const workflows = loadWorkflows();
+  // Fetch data from backend
+  useEffect(() => {
+    Promise.all([
+      fetch('http://localhost:3000/processes').then(res => res.json()),
+      fetch('http://localhost:3000/areas').then(res => res.json()),
+      fetch('http://localhost:3000/subflow-cards').then(res => res.json())
+    ])
+      .then(([processesData, areasData, cardsData]) => {
+        setWorkflows(processesData);
+        setAreas(areasData);
+        setSubflowCards(cardsData);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  }, []);
 
   // Memoized values
   const teamleads = useMemo(() => getUnique(workflows, 'teamlead'), [workflows]);
@@ -99,8 +109,8 @@ export function OverviewContainer() {
     }));
     const allColors = [...dateColors, ...subflowColors];
     return Array.from(new Set(allColors)).map(c => ({ value: c, label: c.charAt(0).toUpperCase() + c.slice(1) }));
-  }, [workflows]);
-  const areaShortnames = initialAreas.map((a: { shortname: string }) => a.shortname);
+  }, [workflows, subflowCards]);
+  const areaShortnames = areas.map((a: { shortname: string }) => a.shortname);
   const subflowNames = areaShortnames;
 
   // Debounced search
@@ -168,7 +178,7 @@ export function OverviewContainer() {
       const filterValue = subflowFilters[subflow];
       if (!filterValue) continue;
       // Find status for this area
-      const area = initialAreas.find((a: { shortname: string }) => a.shortname === subflow);
+      const area = areas.find((a: { shortname: string }) => a.shortname === subflow);
       if (!area) continue;
       const status = wf.statuses.find((s: { subflowId: string }) => {
         const subflowCard = subflowCards.find((card: { id: string; areaId: string }) => card.id === s.subflowId);
@@ -198,6 +208,14 @@ export function OverviewContainer() {
   };
 
   // Render
+  if (loading) {
+    return (
+      <Box sx={{ width: '100%', p: 4 }}>
+        <Typography variant="h5">Loading...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', bgcolor: '#f5f5f5', minHeight: '100vh', p: 0 }}>
       {/* Back Navigation */}

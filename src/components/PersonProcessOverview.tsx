@@ -2,31 +2,69 @@ import { Box, Typography, Card } from '@mui/material';
 import { BackNavigation } from './BackNavigation';
 import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockWorkflows } from '../mockProcesses';
-import { subflowCards } from '../mockSubflowCards';
-import { subflowSteps } from '../mockSubflowSteps';
 import type { WorkflowData, StatusData } from '../types/workflow';
-import { initialAreas } from '../mockAreas';
+import type { Area } from '../types/area';
+import type { SubflowCard } from '../types/subflow';
+import type { SubflowCheckpoint } from '../types/subflow';
 import { PersonDataCard } from './PersonDataCard';
-
-function loadWorkflows(): WorkflowData[] {
-  const stored = localStorage.getItem('mockWorkflows');
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
-      return mockWorkflows;
-    }
-  }
-  return mockWorkflows;
-}
+import { useState, useEffect } from 'react';
 
 export function PersonProcessOverview() {
   const { employeeId } = useParams();
-  // listId can be used later for filtering specific lists
   const navigate = useNavigate();
-  const workflows = loadWorkflows();
+  const [workflows, setWorkflows] = useState<WorkflowData[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
+  const [subflowCards, setSubflowCards] = useState<SubflowCard[]>([]);
+  const [subflowSteps, setSubflowSteps] = useState<SubflowCheckpoint[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch all data from backend
+  useEffect(() => {
+    console.log('PersonProcessOverview: Starting data fetch...');
+    Promise.all([
+      fetch('http://localhost:3000/processes').then(res => {
+        console.log('PersonProcessOverview processes response:', res.status);
+        return res.json();
+      }),
+      fetch('http://localhost:3000/areas').then(res => {
+        console.log('PersonProcessOverview areas response:', res.status);
+        return res.json();
+      }),
+      fetch('http://localhost:3000/subflow-cards').then(res => {
+        console.log('PersonProcessOverview subflow-cards response:', res.status);
+        return res.json();
+      }),
+      fetch('http://localhost:3000/subflow-steps').then(res => {
+        console.log('PersonProcessOverview subflow-steps response:', res.status);
+        return res.json();
+      })
+    ])
+      .then(([processesData, areasData, cardsData, stepsData]) => {
+        console.log('PersonProcessOverview fetched processes:', processesData);
+        console.log('PersonProcessOverview fetched areas:', areasData);
+        console.log('PersonProcessOverview fetched subflow cards:', cardsData);
+        console.log('PersonProcessOverview fetched subflow steps:', stepsData);
+        setWorkflows(processesData);
+        setAreas(areasData);
+        setSubflowCards(cardsData);
+        setSubflowSteps(stepsData);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('PersonProcessOverview error fetching data:', error);
+        setLoading(false);
+      });
+  }, []);
+
   const workflow = workflows.find(w => w.processId === employeeId);
+
+  if (loading) {
+    return (
+      <Box sx={{ p: 4 }}>
+        <Typography variant="h5">Loading...</Typography>
+      </Box>
+    );
+  }
 
   if (!workflow) {
     return (
@@ -62,7 +100,7 @@ export function PersonProcessOverview() {
           .map(status => ({ status, card: subflowCards.find(c => c.id === status.subflowId) }))
           .filter(({ card }) => !!card)
           .map(({ status, card }) => {
-            const area = card ? initialAreas.find(a => a.id === card.areaId) : undefined;
+            const area = card ? areas.find((a: Area) => a.id === card.areaId) : undefined;
             const shortname = area ? area.shortname : 'UNK';
             const total = card ? card.checkpointIds.length : 0;
             const done = status.completion.length;

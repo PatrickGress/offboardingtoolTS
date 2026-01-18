@@ -1,13 +1,27 @@
 import { Card } from '@mui/material';
 import styles from './WorkflowCard.module.css';
-import { initialAreas } from '../mockAreas';
-import { subflowCards } from '../mockSubflowCards';
 import { useNavigate } from 'react-router-dom';
 import type { WorkflowData } from '../types/workflow';
+import type { Area } from '../types/area';
+import type { SubflowCard } from '../types/subflow';
 import { getSubflowTrafficLight } from '../utils/subflowHelpers';
 
-export function WorkflowCard({ data, onNameClick, isTableRow = false, isLast = false }: { data: WorkflowData; onNameClick: () => void; isTableRow?: boolean; isLast?: boolean }) {
-    const areaColumns = initialAreas;
+export function WorkflowCard({ 
+    data, 
+    onNameClick, 
+    isTableRow = false, 
+    isLast = false, 
+    areas = [], 
+    subflowCards = [] 
+}: { 
+    data: WorkflowData; 
+    onNameClick: () => void; 
+    isTableRow?: boolean; 
+    isLast?: boolean;
+    areas?: Area[];
+    subflowCards?: SubflowCard[];
+}) {
+    const areaColumns = areas;
     const navigate = useNavigate();
     // Dynamic area columns
     if (isTableRow) {

@@ -1,14 +1,12 @@
 import { Box, Typography, Button } from '@mui/material';
 import { useParams, useLocation } from 'react-router-dom';
 import { BackNavigation } from './BackNavigation';
-import { subflowCards } from '../mockSubflowCards';
 import { PersonDataCard } from './PersonDataCard';
-import { subflowSteps } from '../mockSubflowSteps';
 import type { SubflowCheckpoint } from '../types/subflow';
+import type { SubflowCard } from '../types/subflow';
 import { useState, useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
-import { mockWorkflows as mockWorkflowsFile } from '../mockProcesses';
 import type { WorkflowData, StatusData } from '../types/workflow';
 
 const WaveOverlay = styled('div')(() => ({
@@ -41,17 +39,6 @@ const CheckIcon = () => (
     </svg>
 );
 
-// Utility to sync mockWorkflows to localStorage
-function syncWorkflowsToLocalStorage(workflows: any[]) {
-    localStorage.setItem('mockWorkflows', JSON.stringify(workflows));
-}
-
-// Utility to load workflows from localStorage or mock file
-function getInitialWorkflows() {
-    const stored = localStorage.getItem('mockWorkflows');
-    return stored ? JSON.parse(stored) : mockWorkflowsFile;
-}
-
 export function ChecklistDetail() {
     const { listId, stepId, employeeId } = useParams();
     const location = useLocation();
@@ -59,13 +46,49 @@ export function ChecklistDetail() {
     const payload = location.state || {};
     // Find card and checkpoints - use listId or stepId
     const cardId = listId || stepId;
-    const card = subflowCards.find(c => c.id === cardId);
     // Use employeeId from URL if available, otherwise fall back to payload
     const processId = employeeId || payload.processId;
-    const checkpoints = card ? card.checkpointIds.map(id => subflowSteps.find(s => s.id === id)).filter((cp): cp is SubflowCheckpoint => !!cp) : [];
 
-    // Local state for workflows, loaded from localStorage or mock file
-    const [workflows, setWorkflows] = useState<any[]>(getInitialWorkflows());
+    // State for data from backend
+    const [workflows, setWorkflows] = useState<WorkflowData[]>([]);
+    const [subflowCards, setSubflowCards] = useState<SubflowCard[]>([]);
+    const [subflowSteps, setSubflowSteps] = useState<SubflowCheckpoint[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch data from backend
+    useEffect(() => {
+        console.log('ChecklistDetail: Starting data fetch...');
+        Promise.all([
+            fetch('http://localhost:3000/processes').then(res => {
+                console.log('ChecklistDetail processes response:', res.status);
+                return res.json();
+            }),
+            fetch('http://localhost:3000/subflow-cards').then(res => {
+                console.log('ChecklistDetail subflow-cards response:', res.status);
+                return res.json();
+            }),
+            fetch('http://localhost:3000/subflow-steps').then(res => {
+                console.log('ChecklistDetail subflow-steps response:', res.status);
+                return res.json();
+            })
+        ])
+            .then(([processesData, cardsData, stepsData]) => {
+                console.log('ChecklistDetail fetched processes:', processesData);
+                console.log('ChecklistDetail fetched subflow cards:', cardsData);
+                console.log('ChecklistDetail fetched subflow steps:', stepsData);
+                setWorkflows(processesData);
+                setSubflowCards(cardsData);
+                setSubflowSteps(stepsData);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('ChecklistDetail error fetching data:', error);
+                setLoading(false);
+            });
+    }, []);
+
+    const card = subflowCards.find(c => c.id === cardId);
+    const checkpoints = card ? card.checkpointIds.map(id => subflowSteps.find(s => s.id === id)).filter((cp): cp is SubflowCheckpoint => !!cp) : [];
 
     // Find workflow and status for this card
     let workflow: WorkflowData | undefined = undefined;
@@ -77,7 +100,6 @@ export function ChecklistDetail() {
     }
 
     const initialChecked: Record<string, boolean> = {};
-    // Initial checked: Record<string, boolean> = {};
     if (payload.completion && Array.isArray(payload.completion)) {
         (payload.completion as string[]).forEach((id: string) => { initialChecked[id] = true; });
     } else if (status && status.completion) {
@@ -103,39 +125,29 @@ export function ChecklistDetail() {
         setCheckedMap(newChecked);
     }, [workflows, processId, payload.subflowId, payload.completion, cardId]);
 
-    // Sync workflows to localStorage whenever they change
-    useEffect(() => {
-        syncWorkflowsToLocalStorage(workflows);
-    }, [workflows]);
-
-    // Handle checkbox toggle and update workflows/localStorage
+    // Handle checkbox toggle and update workflows state
     const handleToggle = (id: string) => {
-        // Find latest workflows from localStorage
-        const stored = localStorage.getItem('mockWorkflows');
-        let latestWorkflows = workflows;
-        if (stored) {
-            try {
-                latestWorkflows = JSON.parse(stored);
-            } catch {}
-        }
         // Find the current workflow and status
-        const wfIdx = latestWorkflows.findIndex((wf: WorkflowData) => wf.processId === processId);
+        const wfIdx = workflows.findIndex((wf: WorkflowData) => wf.processId === processId);
         if (wfIdx === -1) return;
-        const wf = latestWorkflows[wfIdx];
+        const wf = { ...workflows[wfIdx] };
         const subflowId = payload.subflowId || cardId;
         const stIdx = wf.statuses.findIndex((st: StatusData) => st.subflowId === subflowId);
         if (stIdx === -1) return;
-        const st = wf.statuses[stIdx];
+        const st = { ...wf.statuses[stIdx] };
         // Toggle step ID
         if (st.completion.includes(id)) {
             st.completion = st.completion.filter((cid: string) => cid !== id);
         } else {
-            st.completion.push(id);
+            st.completion = [...st.completion, id];
         }
-        // Update localStorage and state
-        latestWorkflows[wfIdx].statuses[stIdx] = st;
-        localStorage.setItem('mockWorkflows', JSON.stringify(latestWorkflows));
-        setWorkflows([...latestWorkflows]);
+        // Update state (Note: In a real app, you'd also POST to backend here)
+        const updatedWorkflows = [...workflows];
+        updatedWorkflows[wfIdx] = {
+            ...wf,
+            statuses: wf.statuses.map((s, idx) => idx === stIdx ? st : s)
+        };
+        setWorkflows(updatedWorkflows);
         // Wave animation
         if (!checkedMap[id]) {
             setWaveMap(prev => ({ ...prev, [id]: true }));
@@ -164,6 +176,14 @@ export function ChecklistDetail() {
             setWorkflows([...workflows]);
         }
     };
+
+    if (loading) {
+        return (
+            <Box sx={{ p: 4 }}>
+                <Typography variant="h5">Loading...</Typography>
+            </Box>
+        );
+    }
 
     if (!card) {
         return <Box sx={{ p: 4 }}><Typography variant="h5">Card not found</Typography></Box>;

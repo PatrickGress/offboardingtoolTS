@@ -1,11 +1,12 @@
 import { Box, Typography, Paper, FormControl, InputLabel, Select, MenuItem, IconButton, Popover } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloseIcon from '@mui/icons-material/Close';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { WorkflowCard } from './WorkflowCard';
 import { FilterPanel } from './FilterPanel';
 import type { WorkflowOverviewProps } from './OverviewContainer';
-import { initialAreas } from '../mockAreas';
+import type { Area } from '../types/area';
+import type { SubflowCard } from '../types/subflow';
 
 const sortOptions = [
     { value: 'exitDate', label: 'Exit Date (soonest)' },
@@ -30,6 +31,30 @@ function sortWorkflows(workflows: any[], sortBy: string) {
 
 export function WorkflowOverview({ onWorkflowClick, filtersOpen, setFiltersOpen, filterPanelProps, activeFilterCount, workflows }: WorkflowOverviewProps) {
     const [sortBy, setSortBy] = useState('exitDate');
+    const [areas, setAreas] = useState<Area[]>([]);
+    const [subflowCards, setSubflowCards] = useState<SubflowCard[]>([]);
+
+    // Fetch areas and subflow cards from backend
+    useEffect(() => {
+        console.log('WorkflowOverview: Starting data fetch...');
+        Promise.all([
+            fetch('http://localhost:3000/areas').then(res => {
+                console.log('WorkflowOverview areas response:', res.status);
+                return res.json();
+            }),
+            fetch('http://localhost:3000/subflow-cards').then(res => {
+                console.log('WorkflowOverview subflow-cards response:', res.status);
+                return res.json();
+            })
+        ])
+            .then(([areasData, cardsData]) => {
+                console.log('WorkflowOverview fetched areas:', areasData);
+                console.log('WorkflowOverview fetched subflow cards:', cardsData);
+                setAreas(areasData);
+                setSubflowCards(cardsData);
+            })
+            .catch(error => console.error('WorkflowOverview error fetching data:', error));
+    }, []);
 
     // Sort the filtered workflows from props
     const sortedWorkflows = sortWorkflows(workflows, sortBy);
@@ -135,14 +160,14 @@ export function WorkflowOverview({ onWorkflowClick, filtersOpen, setFiltersOpen,
                             <th style={{ width: '14%', minWidth: 120, maxWidth: 420, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Department</th>
                             <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Location</th>
                             <th style={{ width: '14%', minWidth: 120, textAlign: 'left', fontWeight: 600, fontSize: '1rem' }}>Exit Date</th>
-                            {initialAreas.map(area => (
+                            {areas.map(area => (
                                 <th key={area.id} style={{ width: '9%', minWidth: 60, textAlign: 'center', fontWeight: 600, fontSize: '1rem' }}>{area.shortname}</th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
                         {sortedWorkflows.map((wf, idx) => (
-                            <WorkflowCard key={wf.id} data={wf} onNameClick={() => onWorkflowClick(wf.processId || wf.id)} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} />
+                            <WorkflowCard key={wf.id} data={wf} onNameClick={() => onWorkflowClick(wf.processId || wf.id)} isTableRow={true} isLast={idx === sortedWorkflows.length - 1} areas={areas} subflowCards={subflowCards} />
                         ))}
                     </tbody>
                 </table>
